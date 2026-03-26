@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#3b66ff", // Vibrant blue from the image
+              "shelf-surface": "#12192b",
+            },
+            fontFamily: {
+              "headline": ["Noto Serif"],
+              "body": ["Work Sans"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .pixel-cloud {
+            position: absolute;
+            background: #ffffff;
+            box-shadow: 
+                20px 0 0 #ffffff, 40px 0 0 #ffffff, 
+                0 20px 0 #ffffff, 20px 20px 0 #ffffff, 40px 20px 0 #ffffff, 60px 20px 0 #ffffff,
+                20px 40px 0 #ffffff, 40px 40px 0 #ffffff;
+            width: 20px;
+            height: 20px;
+            opacity: 1;
+        }
+        .text-vertical {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+        }
+        .book-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+        .book {
+            transition: transform 0.2s ease;
+            cursor: pointer;
+            border-left: 1px solid rgba(0,0,0,0.1);
+        }
+        .book:hover {
+            transform: translateY(-8px);
+        }
+    </style>
+</head>
+<body class="bg-primary min-h-screen flex flex-col items-center justify-center font-body overflow-hidden relative">
+<!-- Pixel Clouds -->
+<div class="pixel-cloud top-[10%] left-[15%] scale-75 opacity-80"></div>
+<div class="pixel-cloud top-[35%] left-[38%] scale-50 opacity-90"></div>
+<div class="pixel-cloud top-[15%] right-[5%] scale-125 opacity-100"></div>
+<div class="pixel-cloud bottom-[40%] right-[2%] scale-90 opacity-100"></div>
+<!-- Hero Header -->
+<div class="text-center z-10 mb-12">
+<p class="font-label uppercase tracking-[0.5em] text-white/70 text-sm mb-2">A Year In</p>
+<h1 class="text-7xl md:text-8xl font-headline font-black text-white tracking-tight leading-none">
+            BOOKS OF<br/>2025
+        </h1>
+</div>
+<!-- Digital Bookshelf -->
+<div class="relative w-full max-w-6xl px-4 z-10">
+<div class="book-container gap-0">
+<!-- Book 1 -->
+<div class="book bg-[#1d1d2b] w-[54px] h-[360px] flex flex-col items-center justify-between py-4 text-white">
+<div class="flex flex-col items-center gap-0.5 opacity-60">
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+</div>
+<div class="text-vertical font-bold text-[13px] tracking-widest flex-grow pt-4">THE CREATIVE ACT</div>
+<div class="text-vertical text-[10px] font-medium opacity-50 pb-2">RUBIN</div>
+</div>
+<!-- Book 2 -->
+<div class="book bg-[#f8b486] w-[42px] h-[310px] flex flex-col items-center justify-between py-4 text-slate-800">
+<div class="flex flex-col items-center gap-0.5 opacity-60">
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+</div>
+<div class="text-vertical font-bold text-[11px] tracking-tight flex-grow pt-4">NO MORE MR. NICE GUY</div>
+<div class="text-vertical text-[10px] font-medium opacity-60 pb-2 uppercase">Glover</div>
+</div>
+<!-- Book 3 -->
+<div class="book bg-[#fedc7f] w-[54px] h-[340px] flex flex-col items-center justify-between py-4 text-slate-900">
+<div class="flex flex-col items-center gap-0.5 text-yellow-600">
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+</div>
+<div class="text-vertical font-black text-[13px] tracking-widest flex-grow pt-4">YELLOWFACE</div>
+<div class="text-vertical text-[10px] font-bold opacity-70 pb-2">KUANG</div>
+</div>
+<!-- Book 4 -->
+<div class="book bg-[#3e6080] w-[48px] h-[335px] flex flex-col items-center justify-between py-4 text-white">
+<div class="flex flex-col items-center gap-0.5 opacity-60">
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+</div>
+<div class="text-vertical font-bold text-[12px] tracking-widest flex-grow pt-4">THE SILENT PATIENT</div>
+<div class="text-vertical text-[9px] font-medium opacity-50 pb-2 uppercase">Michaelides</div>
+</div>
+<!-- Book 5 -->
+<div class="book bg-[#4fa987] w-[44px] h-[335px] flex flex-col items-center justify-between py-4 text-white/90">
+<div class="flex flex-col items-center gap-0.5 opacity-60">
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+</div>
+<div class="text-vertical font-medium text-[10px] tracking-tight flex-grow pt-4 uppercase">Alice's Adventures in Wonderland</div>
+<div class="text-vertical text-[9px] font-bold opacity-60 pb-2 uppercase">Carroll</div>
+</div>
+<!-- Book 6 -->
+<div class="book bg-[#ff4d4d] w-[20px] h-[260px] flex flex-col items-center justify-between py-3 text-white">
+<div class="text-[8px] font-black">★★★</div>
+<div class="text-vertical text-[9px] font-bold tracking-tighter flex-grow py-2">THE GENTLEMAN FROM PERU</div>
+<div class="text-vertical text-[8px] font-bold opacity-60 pb-1">ACIMAN</div>
+</div>
+<!-- Book 7 -->
+<div class="book bg-[#7fa05a] w-[40px] h-[285px] flex flex-col items-center justify-between py-4 text-slate-100">
+<div class="flex flex-col items-center gap-0.5 opacity-50">
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+</div>
+<div class="text-vertical font-bold text-[12px] tracking-tight flex-grow pt-3 uppercase">The Book of Clarity</div>
+<div class="text-vertical text-[9px] font-medium opacity-50 pb-2">CHOPRA</div>
+</div>
+<!-- Book 8 -->
+<div class="book bg-[#3b4b2a] w-[36px] h-[285px] flex flex-col items-center justify-between py-4 text-stone-200">
+<div class="flex flex-col items-center gap-0.5 opacity-40">
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+</div>
+<div class="text-vertical font-bold text-[10px] tracking-tight flex-grow pt-3 uppercase">Before the Coffee Gets Cold</div>
+<div class="text-vertical text-[9px] font-medium opacity-50 pb-2">KAWAGUCHI</div>
+</div>
+<!-- Book 9 -->
+<div class="book bg-[#f7b76e] w-[46px] h-[310px] flex flex-col items-center justify-between py-4 text-slate-800">
+<div class="flex flex-col items-center gap-0.5 opacity-70">
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+</div>
+<div class="text-vertical font-bold text-[11px] tracking-tight flex-grow pt-3 uppercase">The Hard Thing About Hard Things</div>
+<div class="text-vertical text-[9px] font-bold opacity-60 pb-2">HOROWITZ</div>
+</div>
+<!-- Book 10 -->
+<div class="book bg-[#fef5d6] w-[34px] h-[265px] flex flex-col items-center justify-between py-4 text-slate-800">
+<div class="flex flex-col items-center gap-0.5 text-yellow-600">
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+</div>
+<div class="text-vertical font-bold text-[11px] tracking-tight flex-grow pt-2 uppercase">Ghachar Ghochar</div>
+<div class="text-vertical text-[8px] font-medium opacity-60 pb-1">SHANBHAG</div>
+</div>
+<!-- Book 11 -->
+<div class="book bg-[#002a46] w-[50px] h-[340px] flex flex-col items-center justify-between py-4 text-white">
+<div class="flex flex-col items-center gap-0.5 opacity-70">
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+</div>
+<div class="text-vertical font-black text-[13px] tracking-[0.2em] flex-grow pt-4">TINY EXPERIMENTS</div>
+<div class="text-vertical text-[10px] font-bold opacity-50 pb-2">CUNFF</div>
+</div>
+<!-- Book 12 -->
+<div class="book bg-[#d72131] w-[44px] h-[320px] flex flex-col items-center justify-between py-4 text-white">
+<div class="flex flex-col items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px] opacity-60">star</span>
+<span class="material-symbols-outlined text-[12px] opacity-60">star</span>
+<span class="material-symbols-outlined text-[12px] opacity-60">star</span>
+</div>
+<div class="text-vertical font-black text-[13px] tracking-widest flex-grow pt-4">PIRANESI</div>
+<div class="text-vertical text-[10px] font-bold opacity-50 pb-2">CLARKE</div>
+</div>
+<!-- Book 13 -->
+<div class="book bg-[#f89b21] w-[42px] h-[320px] flex flex-col items-center justify-between py-4 text-slate-800">
+<div class="flex flex-col items-center gap-0.5 opacity-60">
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+</div>
+<div class="text-vertical font-black text-[11px] tracking-tight flex-grow pt-4 uppercase">White Nights</div>
+<div class="text-vertical text-[9px] font-bold opacity-60 pb-2">DOSTOEVSKY</div>
+</div>
+<!-- Book 14 -->
+<div class="book bg-[#fecb4d] w-[50px] h-[340px] flex flex-col items-center justify-between py-4 text-slate-900">
+<div class="flex flex-col items-center gap-0.5 text-orange-700">
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+</div>
+<div class="text-vertical font-black text-[14px] tracking-widest flex-grow pt-4">V FOR VENDETTA</div>
+<div class="text-vertical text-[10px] font-bold opacity-70 pb-2">MOORE</div>
+</div>
+<!-- Book 15 -->
+<div class="book bg-[#8e54e9] w-[34px] h-[285px] flex flex-col items-center justify-between py-4 text-white">
+<div class="text-[9px] opacity-60 font-black">★★★★</div>
+<div class="text-vertical font-bold text-[10px] tracking-tight flex-grow pt-2 uppercase">Of Mice and Men</div>
+<div class="text-vertical text-[9px] font-medium opacity-60 pb-2">STEINBECK</div>
+</div>
+<!-- Book 16 -->
+<div class="book bg-[#6eb7ff] w-[40px] h-[330px] flex flex-col items-center justify-between py-4 text-white">
+<div class="text-[9px] opacity-60 font-black">★★★★★</div>
+<div class="text-vertical font-medium text-[10px] tracking-tight flex-grow pt-3 uppercase">The Housekeeper and the Professor</div>
+<div class="text-vertical text-[9px] font-bold opacity-60 pb-2">OGAWA</div>
+</div>
+<!-- Book 17 -->
+<div class="book bg-[#ff1a7f] w-[46px] h-[335px] flex flex-col items-center justify-between py-4 text-white">
+<div class="flex flex-col items-center gap-0.5 opacity-70">
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+</div>
+<div class="text-vertical font-bold text-[12px] tracking-widest flex-grow pt-4 uppercase">The Memory Police</div>
+<div class="text-vertical text-[9px] font-bold opacity-60 pb-2">OGAWA</div>
+</div>
+<!-- Book 18 -->
+<div class="book bg-[#ffcc33] w-[48px] h-[335px] flex flex-col items-center justify-between py-4 text-slate-800">
+<div class="flex flex-col items-center gap-0.5 text-orange-600">
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+</div>
+<div class="text-vertical font-black text-[13px] tracking-widest flex-grow pt-4">HATCHING TWITTER</div>
+<div class="text-vertical text-[10px] font-bold opacity-60 pb-2">BILTON</div>
+</div>
+<!-- Book 19 -->
+<div class="book bg-[#004b66] w-[34px] h-[280px] flex flex-col items-center justify-between py-4 text-white">
+<div class="text-[9px] opacity-60 font-black">★★★★</div>
+<div class="text-vertical font-bold text-[11px] tracking-widest flex-grow pt-2">THE FALL</div>
+<div class="text-vertical text-[9px] font-medium opacity-50 pb-1">CAMUS</div>
+</div>
+<!-- Book 20 -->
+<div class="book bg-[#40c4cc] w-[46px] h-[310px] flex flex-col items-center justify-between py-4 text-slate-900">
+<div class="flex flex-col items-center gap-0.5 opacity-60">
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+</div>
+<div class="text-vertical font-black text-[15px] tracking-[0.3em] flex-grow pt-4">HOLES</div>
+<div class="text-vertical text-[10px] font-bold opacity-60 pb-2">SACHAR</div>
+</div>
+<!-- Book 21 -->
+<div class="book bg-[#f89021] w-[46px] h-[335px] flex flex-col items-center justify-between py-4 text-slate-900">
+<div class="flex flex-col items-center gap-0.5 opacity-60">
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+<span class="material-symbols-outlined text-[12px] fill-current">star</span>
+</div>
+<div class="text-vertical font-black text-[13px] tracking-widest flex-grow pt-4">BLACK EDGE</div>
+<div class="text-vertical text-[10px] font-bold opacity-70 pb-2">KOLHATKAR</div>
+</div>
+<!-- Book 22 -->
+<div class="book bg-[#70647a] w-[50px] h-[310px] flex flex-col items-center justify-between py-4 text-white/80">
+<div class="text-[9px] font-black opacity-40">★★★★</div>
+<div class="text-vertical font-bold text-[11px] tracking-widest flex-grow pt-3 uppercase">Company of One</div>
+<div class="text-vertical text-[10px] font-medium opacity-50 pb-2">JARVIS</div>
+</div>
+<!-- Book 23 -->
+<div class="book bg-[#e19a9a] w-[34px] h-[260px] flex flex-col items-center justify-between py-3 text-slate-900">
+<div class="text-[8px] font-black opacity-40">★★★</div>
+<div class="text-vertical font-bold text-[9px] tracking-tight flex-grow py-2 uppercase">Grief is the thing with feathers</div>
+<div class="text-vertical text-[8px] font-medium opacity-60 pb-1">PORTER</div>
+</div>
+<!-- Book 24 -->
+<div class="book bg-[#1d1d2b] w-[50px] h-[330px] flex flex-col items-center justify-between py-4 text-white">
+<div class="flex flex-col items-center gap-0.5 opacity-60">
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+<span class="material-symbols-outlined text-[10px] fill-current">star</span>
+</div>
+<div class="text-vertical font-bold text-[12px] tracking-widest flex-grow pt-4 uppercase">The Housemaid's Secret</div>
+<div class="text-vertical text-[10px] font-medium opacity-50 pb-2">MCFADDEN</div>
+</div>
+</div>
+<!-- Shelf Surface -->
+<div class="h-2 w-full bg-[#12192b] mt-[-1px] rounded-b-sm relative z-20 shadow-2xl"></div>
+<div class="h-8 w-full bg-black/20 blur-md absolute -bottom-4 left-0"></div>
+</div>
+<!-- Interactive Hint -->
+<div class="absolute bottom-12 left-1/2 -translate-x-1/2 opacity-60 animate-bounce">
+<span class="material-symbols-outlined text-white text-4xl">pan_tool_alt</span>
+</div>
+</body></html>
