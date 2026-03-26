@@ -45,17 +45,19 @@ const books: Book[] = [
 
 /* ── Helpers ── */
 
+function StarIcon({ size = 10, filled = true }: { size?: number; filled?: boolean }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth={filled ? 0 : 2}>
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+    </svg>
+  );
+}
+
 function StarRating({ count, color }: { count: number; color?: string }) {
   return (
     <div className={`flex flex-col items-center gap-px ${color ?? "opacity-60"}`}>
       {Array.from({ length: count }, (_, i) => (
-        <span
-          key={i}
-          className="material-symbols-outlined leading-none"
-          style={{ fontSize: "10px", width: "10px", height: "10px" }}
-        >
-          star
-        </span>
+        <StarIcon key={i} size={10} />
       ))}
     </div>
   );
@@ -65,17 +67,7 @@ function InlineStars({ count, color }: { count: number; color?: string }) {
   return (
     <div className={`flex items-center gap-0.5 ${color ?? "text-yellow-500"}`}>
       {Array.from({ length: 5 }, (_, i) => (
-        <span
-          key={i}
-          className="material-symbols-outlined"
-          style={{
-            fontSize: "16px",
-            fontVariationSettings: i < count ? "'FILL' 1" : "'FILL' 0",
-            opacity: i < count ? 1 : 0.3,
-          }}
-        >
-          star
-        </span>
+        <StarIcon key={i} size={16} filled={i < count} />
       ))}
     </div>
   );
@@ -417,13 +409,7 @@ function OpenBook({
                 <div className="flex flex-col items-center gap-6 text-center">
                   <div className="flex gap-1 opacity-70">
                     {Array.from({ length: book.stars }, (_, i) => (
-                      <span
-                        key={i}
-                        className="material-symbols-outlined"
-                        style={{ fontSize: "14px", fontVariationSettings: "'FILL' 1" }}
-                      >
-                        star
-                      </span>
+                      <StarIcon key={i} size={14} />
                     ))}
                   </div>
                   <h2 className="font-headline font-black text-2xl tracking-tight leading-tight max-w-[280px]">
@@ -458,14 +444,61 @@ function OpenBook({
                 transition: "opacity 0.3s ease",
               }}
             >
-              <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
-                close
-              </span>
+              <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
             </button>
           )}
         </div>
       </div>
     </>
+  );
+}
+
+/* ── Shelf ── */
+
+function Shelf() {
+  return (
+    <div className="shelf-fade relative z-20 -mt-px">
+      <div className="h-[6px] w-full bg-[#1a2540] relative z-30" />
+      <div
+        className="h-[28px] w-full relative z-20"
+        style={{
+          background: "linear-gradient(180deg, #0e1729 0%, #162038 40%, #0c1222 100%)",
+          boxShadow: "0 2px 12px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)",
+        }}
+      >
+        <div className="absolute inset-0 opacity-[0.04]" style={{
+          backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(255,255,255,0.5) 4px, rgba(255,255,255,0.5) 5px)",
+        }} />
+        <div className="absolute top-[11px] left-[5%] right-[5%] h-px bg-white/[0.06]" />
+        <div className="absolute top-[15px] left-[5%] right-[5%] h-px bg-black/30" />
+      </div>
+      <div
+        className="h-[10px] w-full relative z-10"
+        style={{ background: "linear-gradient(180deg, #080e1a 0%, #060a14 100%)" }}
+      />
+      <div
+        className="h-[20px] w-[98%] mx-auto relative"
+        style={{
+          background: "radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, transparent 70%)",
+          filter: "blur(4px)",
+          marginTop: "-2px",
+        }}
+      />
+      <div className="absolute -left-3 top-0 w-[14px] h-[44px] z-30" style={{
+        background: "linear-gradient(90deg, #0a1020, #162038 40%, #0e1729)",
+        boxShadow: "-2px 2px 6px rgba(0,0,0,0.3)",
+      }}>
+        <div className="absolute top-0 left-0 w-full h-[6px] bg-[#1a2540]" />
+      </div>
+      <div className="absolute -right-3 top-0 w-[14px] h-[44px] z-30" style={{
+        background: "linear-gradient(270deg, #0a1020, #162038 40%, #0e1729)",
+        boxShadow: "2px 2px 6px rgba(0,0,0,0.3)",
+      }}>
+        <div className="absolute top-0 left-0 w-full h-[6px] bg-[#1a2540]" />
+      </div>
+    </div>
   );
 }
 
@@ -509,28 +542,47 @@ export default function Home() {
         </h1>
       </div>
 
-      <div className="relative w-full max-w-6xl px-4 z-10">
-        <div className="flex items-end justify-center gap-0">
-          {books.map((book, i) => (
-            <BookSpine
-              key={book.title}
-              book={book}
-              index={i}
-              onClick={(rect) => handleOpen(book, rect)}
-              isOpen={openBook?.book.title === book.title}
-            />
-          ))}
+      {/* Two shelves side by side — each has all 24 books, scaled down */}
+      <div className="flex items-end justify-center gap-6 z-10 w-full max-w-[1600px] px-4">
+
+        {/* Left shelf */}
+        <div className="relative shrink-0" style={{ transform: "scale(0.58)", transformOrigin: "bottom center" }}>
+          <div className="flex items-end justify-center gap-0">
+            {books.map((book, i) => (
+              <BookSpine
+                key={`left-${book.title}`}
+                book={book}
+                index={i}
+                onClick={(rect) => handleOpen(book, rect)}
+                isOpen={openBook?.book.title === book.title}
+              />
+            ))}
+          </div>
+          <Shelf />
         </div>
-        <div className="shelf-fade">
-          <div className="h-2 w-full bg-shelf-surface -mt-px relative z-20 shadow-2xl" />
-          <div className="h-8 w-full bg-black/20 blur-md absolute -bottom-4 left-0" />
+
+        {/* Right shelf */}
+        <div className="relative shrink-0" style={{ transform: "scale(0.58)", transformOrigin: "bottom center" }}>
+          <div className="flex items-end justify-center gap-0">
+            {books.map((book, i) => (
+              <BookSpine
+                key={`right-${book.title}`}
+                book={book}
+                index={i + 24}
+                onClick={(rect) => handleOpen(book, rect)}
+                isOpen={openBook?.book.title === book.title}
+              />
+            ))}
+          </div>
+          <Shelf />
         </div>
+
       </div>
 
       <div className="absolute bottom-12 left-1/2 hint-bounce opacity-60">
-        <span className="material-symbols-outlined text-white" style={{ fontSize: "36px" }}>
-          pan_tool_alt
-        </span>
+        <svg width={36} height={36} viewBox="0 0 24 24" fill="white">
+          <path d="M18 13c-.55 0-1.05.23-1.41.59l-.07.07-2.52-1.49V6c0-.83-.67-1.5-1.5-1.5S11 5.17 11 6v7.12l-3.07-1.63c-.56-.3-1.19-.19-1.67.15-.48.34-.72.86-.61 1.39l.04.12 2.64 6.03c.09.21.23.39.4.53l.12.09C9.74 20.23 10.84 21 12.5 21h3c2.33 0 4-1.67 4-4v-2.5c0-.83-.67-1.5-1.5-1.5z"/>
+        </svg>
       </div>
 
       {openBook && (
