@@ -455,53 +455,6 @@ function OpenBook({
   );
 }
 
-/* ── Shelf ── */
-
-function Shelf() {
-  return (
-    <div className="shelf-fade relative z-20 -mt-px">
-      <div className="h-[6px] w-full bg-[#1a2540] relative z-30" />
-      <div
-        className="h-[28px] w-full relative z-20"
-        style={{
-          background: "linear-gradient(180deg, #0e1729 0%, #162038 40%, #0c1222 100%)",
-          boxShadow: "0 2px 12px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)",
-        }}
-      >
-        <div className="absolute inset-0 opacity-[0.04]" style={{
-          backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(255,255,255,0.5) 4px, rgba(255,255,255,0.5) 5px)",
-        }} />
-        <div className="absolute top-[11px] left-[5%] right-[5%] h-px bg-white/[0.06]" />
-        <div className="absolute top-[15px] left-[5%] right-[5%] h-px bg-black/30" />
-      </div>
-      <div
-        className="h-[10px] w-full relative z-10"
-        style={{ background: "linear-gradient(180deg, #080e1a 0%, #060a14 100%)" }}
-      />
-      <div
-        className="h-[20px] w-[98%] mx-auto relative"
-        style={{
-          background: "radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, transparent 70%)",
-          filter: "blur(4px)",
-          marginTop: "-2px",
-        }}
-      />
-      <div className="absolute -left-3 top-0 w-[14px] h-[44px] z-30" style={{
-        background: "linear-gradient(90deg, #0a1020, #162038 40%, #0e1729)",
-        boxShadow: "-2px 2px 6px rgba(0,0,0,0.3)",
-      }}>
-        <div className="absolute top-0 left-0 w-full h-[6px] bg-[#1a2540]" />
-      </div>
-      <div className="absolute -right-3 top-0 w-[14px] h-[44px] z-30" style={{
-        background: "linear-gradient(270deg, #0a1020, #162038 40%, #0e1729)",
-        boxShadow: "2px 2px 6px rgba(0,0,0,0.3)",
-      }}>
-        <div className="absolute top-0 left-0 w-full h-[6px] bg-[#1a2540]" />
-      </div>
-    </div>
-  );
-}
-
 /* ── PixelCloud ── */
 
 function PixelCloud({ className, driftDelay }: { className: string; driftDelay: string }) {
@@ -542,41 +495,22 @@ export default function Home() {
         </h1>
       </div>
 
-      {/* Two shelves side by side — each has all 24 books, scaled down */}
-      <div className="flex items-end justify-center gap-6 z-10 w-full max-w-[1600px] px-4">
-
-        {/* Left shelf */}
-        <div className="relative shrink-0" style={{ transform: "scale(0.58)", transformOrigin: "bottom center" }}>
-          <div className="flex items-end justify-center gap-0">
-            {books.map((book, i) => (
-              <BookSpine
-                key={`left-${book.title}`}
-                book={book}
-                index={i}
-                onClick={(rect) => handleOpen(book, rect)}
-                isOpen={openBook?.book.title === book.title}
-              />
-            ))}
-          </div>
-          <Shelf />
+      <div className="relative w-full max-w-6xl px-4 z-10">
+        <div className="flex items-end justify-center gap-0">
+          {books.map((book, i) => (
+            <BookSpine
+              key={book.title}
+              book={book}
+              index={i}
+              onClick={(rect) => handleOpen(book, rect)}
+              isOpen={openBook?.book.title === book.title}
+            />
+          ))}
         </div>
-
-        {/* Right shelf */}
-        <div className="relative shrink-0" style={{ transform: "scale(0.58)", transformOrigin: "bottom center" }}>
-          <div className="flex items-end justify-center gap-0">
-            {books.map((book, i) => (
-              <BookSpine
-                key={`right-${book.title}`}
-                book={book}
-                index={i + 24}
-                onClick={(rect) => handleOpen(book, rect)}
-                isOpen={openBook?.book.title === book.title}
-              />
-            ))}
-          </div>
-          <Shelf />
+        <div className="shelf-fade">
+          <div className="h-2 w-full bg-shelf-surface -mt-px relative z-20 shadow-2xl" />
+          <div className="h-8 w-full bg-black/20 blur-md absolute -bottom-4 left-0" />
         </div>
-
       </div>
 
       <div className="absolute bottom-12 left-1/2 hint-bounce opacity-60">
