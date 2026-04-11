@@ -1344,26 +1344,314 @@ function WeatherControls({
   );
 }
 
+/* ── Library ── */
+
+// Rotate the books array to give each library shelf a different starting book
+// without having to author additional book data.
+function rotateBooks(offset: number): Book[] {
+  return [...books.slice(offset), ...books.slice(0, offset)];
+}
+
+const LIB_SCALE = 0.55;
+const LIB_SHELF_H = Math.round(400 * LIB_SCALE);
+
+function LibraryShelf({
+  shelf,
+  shelfIndex,
+  openId,
+  onOpen,
+  label,
+}: {
+  shelf: Book[];
+  shelfIndex: number;
+  openId: string | null;
+  onOpen: (book: Book, rect: SpineRect, id: string) => void;
+  label: string;
+}) {
+  return (
+    <div className="relative w-full">
+      {/* Shelf Backing with subtle SVG wallpaper */}
+      <div
+        className="relative w-full overflow-hidden"
+        style={{
+          height: `${LIB_SHELF_H}px`,
+          background: "#0a0502",
+        }}
+      >
+        <svg className="absolute inset-0 w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+          <pattern id={`wallpaper-${shelfIndex}`} x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+             <path d="M0,20 L40,20 M20,0 L20,40" stroke="#c9a86a" strokeWidth="0.5" />
+             <circle cx="20" cy="20" r="10" fill="none" stroke="#c9a86a" strokeWidth="0.5" />
+          </pattern>
+          <rect x="0" y="0" width="100%" height="100%" fill={`url(#wallpaper-${shelfIndex})`} />
+        </svg>
+        
+        <div
+          className="absolute left-1/2 bottom-0"
+          style={{
+            transform: `translateX(-50%) scale(${LIB_SCALE})`,
+            transformOrigin: "bottom center",
+          }}
+        >
+          <div className="flex items-end justify-center gap-0">
+            {shelf.map((book, i) => {
+              const id = `lib-${shelfIndex}-${i}`;
+              return (
+                <BookSpine
+                  key={id}
+                  book={book}
+                  index={shelfIndex * 30 + i}
+                  onClick={(rect) => onOpen(book, rect, id)}
+                  isOpen={openId === id}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* SVG Shelf Base */}
+      <div className="relative h-8 w-full z-10 drop-shadow-2xl">
+         <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="100" height="8" fill="#4a2d1a" />
+            <rect x="0" y="8" width="100" height="4" fill="#2a1810" />
+            <rect x="0" y="12" width="100" height="8" fill="#130a05" />
+            <path d="M5,12 L5,20 L15,12 Z" fill="#2a1810" />
+            <path d="M95,12 L95,20 L85,12 Z" fill="#2a1810" />
+         </svg>
+         
+         {/* Label */}
+         <div className="absolute inset-0 flex items-center justify-center -top-3">
+            <div className="bg-[#1a0f0a] border border-[#c9a86a]/30 px-4 py-1 rounded-sm shadow-md">
+              <span className="font-label text-[10px] tracking-[0.4em] uppercase text-[#c9a86a]">
+                {label}
+              </span>
+            </div>
+         </div>
+      </div>
+    </div>
+  );
+}
+
+function LibraryFrame({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="relative w-full rounded-t-3xl overflow-hidden shadow-[0_40px_90px_rgba(0,0,0,0.8)] bg-[#0f0805] border-x-[16px] border-b-[24px] border-[#2a1810]">
+      {/* Side columns for the shelves */}
+      <div className="relative">
+        <div className="absolute top-0 bottom-0 left-0 w-8 bg-gradient-to-r from-[#130a05] via-[#3a2012] to-[#130a05] z-20 border-r border-[#0f0805]" />
+        <div className="absolute top-0 bottom-0 right-0 w-8 bg-gradient-to-l from-[#130a05] via-[#3a2012] to-[#130a05] z-20 border-l border-[#0f0805]" />
+        
+        {/* Content area */}
+        <div className="relative z-10 px-8">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LibraryView({
+  openId,
+  onOpen,
+}: {
+  openId: string | null;
+  onOpen: (book: Book, rect: SpineRect, id: string) => void;
+}) {
+  const headingRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      gsap.from(headingRef.current, {
+        opacity: 0,
+        y: -10,
+        duration: 0.6,
+        delay: 0.4,
+        ease: "power2.out",
+      });
+    },
+    { dependencies: [] },
+  );
+
+  const shelves = [
+    { offset: 0, books: rotateBooks(0), label: "Section I · Fiction" },
+    { offset: 9, books: rotateBooks(9), label: "Section II · Essays" },
+    { offset: 17, books: rotateBooks(17), label: "Section III · Classics" },
+  ];
+
+  return (
+    <div className="relative w-full max-w-[1200px] px-6 z-10 pt-10">
+      <div ref={headingRef} className="text-center mb-8 relative">
+        <p
+          className="font-label uppercase tracking-[0.55em] text-xs mb-2 relative z-10"
+          style={{ color: "#c9a86a" }}
+        >
+          The
+        </p>
+        <h1
+          className="font-headline font-black tracking-[0.15em] leading-none text-5xl md:text-6xl relative z-10"
+          style={{
+            color: "#f5e9cf",
+            textShadow: `0 4px 12px rgba(0,0,0,0.8), 0 1px 0 #130a05`,
+          }}
+        >
+          LIBRARY
+        </h1>
+        {/* Decorative background SVG for the title */}
+        <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[150px] opacity-20 pointer-events-none" viewBox="0 0 600 150">
+           <path d="M50,75 L250,75 M350,75 L550,75" stroke="#c9a86a" strokeWidth="1" />
+           <circle cx="50" cy="75" r="4" fill="#c9a86a" />
+           <circle cx="550" cy="75" r="4" fill="#c9a86a" />
+           <path d="M280,75 L300,55 L320,75 L300,95 Z" fill="none" stroke="#c9a86a" strokeWidth="2" />
+        </svg>
+      </div>
+
+      <LibraryFrame>
+        {shelves.map((shelf, si) => (
+          <LibraryShelf
+            key={shelf.offset}
+            shelf={shelf.books}
+            shelfIndex={si}
+            openId={openId}
+            onOpen={onOpen}
+            label={shelf.label}
+          />
+        ))}
+      </LibraryFrame>
+    </div>
+  );
+}
+
+/* ── Navigation buttons ── */
+
+function LibraryButton({ onClick }: { onClick: () => void }) {
+  const ref = useRef<HTMLButtonElement>(null);
+
+  useGSAP(
+    () => {
+      gsap.from(ref.current, {
+        opacity: 0,
+        x: 20,
+        duration: 0.6,
+        delay: 1.4,
+        ease: "power2.out",
+      });
+    },
+    { dependencies: [] },
+  );
+
+  return (
+    <button
+      ref={ref}
+      type="button"
+      onClick={onClick}
+      className="absolute bottom-12 right-12 z-30 flex items-center gap-3 px-5 py-3 bg-black/25 backdrop-blur-md border border-white/15 rounded-full text-white font-label text-xs uppercase tracking-[0.25em] hover:bg-white/15 transition-colors"
+    >
+      Enter Library
+      <svg
+        width={14}
+        height={14}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <title>Enter library</title>
+        <path d="M5 12h14M12 5l7 7-7 7" />
+      </svg>
+    </button>
+  );
+}
+
+function BackButton({ onClick }: { onClick: () => void }) {
+  const ref = useRef<HTMLButtonElement>(null);
+
+  useGSAP(
+    () => {
+      gsap.from(ref.current, {
+        opacity: 0,
+        x: -20,
+        duration: 0.5,
+        delay: 0.3,
+        ease: "power2.out",
+      });
+    },
+    { dependencies: [] },
+  );
+
+  return (
+    <button
+      ref={ref}
+      type="button"
+      onClick={onClick}
+      className="absolute top-6 left-6 z-30 flex items-center gap-3 px-5 py-3 bg-black/25 backdrop-blur-md border border-white/15 rounded-full text-white font-label text-xs uppercase tracking-[0.25em] hover:bg-white/15 transition-colors"
+    >
+      <svg
+        width={14}
+        height={14}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <title>Back</title>
+        <path d="M19 12H5M12 19l-7-7 7-7" />
+      </svg>
+      Back
+    </button>
+  );
+}
+
 /* ── Page ── */
+
+type View = "home" | "library";
 
 export default function Home() {
   const [weather, setWeather] = useState<Weather>("sunny");
+  const [view, setView] = useState<View>("home");
   const [openBook, setOpenBook] = useState<{
     book: Book;
     rect: SpineRect;
+    id: string;
   } | null>(null);
 
   const bgRef = useRef<HTMLDivElement>(null);
   const weatherContainerRef = useRef<HTMLDivElement>(null);
+  const slideRef = useRef<HTMLDivElement>(null);
   const transitioningRef = useRef(false);
+  const navigatingRef = useRef(false);
 
-  const handleOpen = useCallback((book: Book, rect: SpineRect) => {
-    setOpenBook({ book, rect });
+  const handleOpen = useCallback((book: Book, rect: SpineRect, id: string) => {
+    setOpenBook({ book, rect, id });
   }, []);
 
   const handleClose = useCallback(() => {
     setOpenBook(null);
   }, []);
+
+  const handleNavigate = useCallback(
+    (target: View) => {
+      if (navigatingRef.current || target === view) return;
+      navigatingRef.current = true;
+
+      // slideRef is 200vw wide with two 100vw panels side-by-side.
+      // xPercent: -50 shifts it left by 50% of its own (200vw) width = 100vw,
+      // bringing the library panel into view.
+      gsap.to(slideRef.current, {
+        xPercent: target === "library" ? -50 : 0,
+        duration: 0.8,
+        ease: "power3.inOut",
+        onComplete: () => {
+          setView(target);
+          navigatingRef.current = false;
+        },
+      });
+    },
+    [view],
+  );
 
   const handleWeatherChange = useCallback(
     (newWeather: Weather) => {
@@ -1408,7 +1696,7 @@ export default function Home() {
   return (
     <div
       ref={bgRef}
-      className="min-h-screen flex flex-col items-center justify-center font-body overflow-hidden relative"
+      className="min-h-screen font-body overflow-hidden relative"
       style={{ backgroundColor: WEATHER_BG.sunny }}
     >
       <div
@@ -1423,33 +1711,64 @@ export default function Home() {
 
       <WeatherControls weather={weather} onChange={handleWeatherChange} />
 
-      <div className="text-center z-10 mb-12">
-        <p className="font-label uppercase tracking-[0.5em] text-white/70 text-sm mb-2">
-          A Year In
-        </p>
-        <h1 className="text-7xl md:text-8xl font-headline font-black text-white tracking-tight leading-none">
-          BOOKS OF
-          <br />
-          2025
-        </h1>
-      </div>
+      {/* Sliding container: 200vw wide with home + library as side-by-side panels.
+          Animating one element (instead of two coordinated tweens) avoids any
+          transform reconciliation issues. Initial x=0 shows home; x=-100vw shows library. */}
+      <div
+        ref={slideRef}
+        className="absolute top-0 left-0 h-full flex"
+        style={{ width: "200vw" }}
+      >
+        {/* Home panel */}
+        <div className="relative w-screen h-full flex flex-col items-center justify-center shrink-0">
+          <div className="text-center z-10 mb-12">
+            <p className="font-label uppercase tracking-[0.5em] text-white/70 text-sm mb-2">
+              A Year In
+            </p>
+            <h1 className="text-7xl md:text-8xl font-headline font-black text-white tracking-tight leading-none">
+              BOOKS OF
+              <br />
+              2025
+            </h1>
+          </div>
 
-      <div className="relative w-full max-w-6xl px-4 z-10">
-        <div className="flex items-end justify-center gap-0">
-          {books.map((book, i) => (
-            <BookSpine
-              key={book.title}
-              book={book}
-              index={i}
-              onClick={(rect) => handleOpen(book, rect)}
-              isOpen={openBook?.book.title === book.title}
-            />
-          ))}
+          <div className="relative w-full max-w-6xl px-4 z-10">
+            <div className="flex items-end justify-center gap-0">
+              {books.map((book, i) => {
+                const id = `home-${i}`;
+                return (
+                  <BookSpine
+                    key={id}
+                    book={book}
+                    index={i}
+                    onClick={(rect) => handleOpen(book, rect, id)}
+                    isOpen={openBook?.id === id}
+                  />
+                );
+              })}
+            </div>
+            <Shelf />
+          </div>
+
+          <HintIcon />
+          <LibraryButton onClick={() => handleNavigate("library")} />
         </div>
-        <Shelf />
-      </div>
 
-      <HintIcon />
+        {/* Library panel */}
+        <div className="relative w-screen h-full flex flex-col items-center justify-center shrink-0">
+          {/* Warm indoor ambient overlay — dims the outside weather to feel like
+              you're inside the library room rather than still outdoors. */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(20,10,5,0.55) 0%, rgba(5,3,2,0.85) 100%)",
+            }}
+          />
+          <BackButton onClick={() => handleNavigate("home")} />
+          <LibraryView openId={openBook?.id ?? null} onOpen={handleOpen} />
+        </div>
+      </div>
 
       {openBook && (
         <OpenBook
