@@ -18,15 +18,19 @@ No test suite is configured.
 
 ## Architecture
 
-**Promptlet** is a single-page, client-side Next.js app (App Router). The entire interactive UI lives in `app/page.tsx` — there are no API routes, no database, and no external integrations.
+**Promptlet** is a multi-page, client-side Next.js app (App Router) with View Transitions. The UI is split across two routes with shared weather and book components.
 
 ### Key files
 
-- `app/page.tsx` — The entire app: book data array, animation state machine, and all React components. Marked `"use client"`.
-- `app/globals.css` — Global styles, custom keyframe animations, and Tailwind 4 CSS theme variables (colors, fonts).
-- `app/layout.tsx` — Root layout: Google Fonts loading, metadata, and conditional dev-tool script injection.
-- `next.config.ts` — Minimal config; `reactCompiler: true` enables the React Compiler for auto-memoization.
-- `biome.json` — Linting and formatting rules (2-space indent, git-aware, import organization).
+- `app/page.tsx` — Home page: hero header + single bookshelf row with all 24 books. Marked `"use client"`.
+- `app/library/page.tsx` — Library page: 3 themed shelves with Minecraft decorations inside a wooden bookcase frame. Marked `"use client"`.
+- `app/books-data.ts` — Typed book data array shared between both pages.
+- `app/components.tsx` — Shared UI components: BookSpine, OpenBook overlay, StarIcon, StarRating, InlineStars, and color helpers.
+- `app/weather.tsx` — Weather system components: PixelCloud, SunnyWeather, NightWeather, RainWeather, SnowWeather, WeatherControls.
+- `app/weather-provider.tsx` — WeatherShell context provider that wraps both pages with the weather background and controls.
+- `app/globals.css` — Global styles, custom keyframe animations, View Transition CSS classes, and Tailwind 4 CSS theme variables.
+- `app/layout.tsx` — Root layout: Google Fonts, metadata, WeatherShell wrapper, and `<ViewTransition>` with slide animation types for route navigation.
+- `next.config.ts` — Config with `reactCompiler: true` and `experimental.viewTransition: true`.
 
 ### Animation system
 
@@ -37,6 +41,10 @@ Book opening uses a 4-phase state machine per book (stored in `useState`):
 - `3` — fully opened (cover flipped via CSS 3D Y-axis rotation)
 
 Staggered entrance animations use a 0.04s delay per book index.
+
+### Navigation
+
+Route transitions between `/` (home) and `/library` use React's `<ViewTransition>` component with `addTransitionType` to trigger directional slide animations. The `navigate-forward` type slides content left, `navigate-back` slides right. Navigation is triggered via `startTransition` + `router.push` with `addTransitionType`.
 
 ### Data
 

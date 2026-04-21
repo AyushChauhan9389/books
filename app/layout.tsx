@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { WeatherShell } from "./weather-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -21,7 +22,9 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col font-body">
-        {children}
+        <WeatherShell>
+            {children}
+        </WeatherShell>
         {process.env.NODE_ENV === "development" && (
           <Script
             src="//unpkg.com/react-grab/dist/index.global.js"
