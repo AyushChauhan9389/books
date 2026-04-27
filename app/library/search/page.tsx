@@ -289,7 +289,7 @@ function CategoryRow({ query }: { query: string }) {
     <div className="relative w-full overflow-hidden">
       <div
         ref={trackRef}
-        className="flex items-end justify-center gap-4 px-6 pt-6 pb-4 overflow-x-auto"
+        className="flex items-end justify-center gap-4 px-6 pt-16 pb-4 overflow-x-auto"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {categories.map((cat, i) => (
