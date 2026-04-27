@@ -387,14 +387,14 @@ function BookRow({
   }, [query, isSearching]);
 
   return (
-    <div className="relative w-screen -mx-6 overflow-visible">
+    <div className="relative w-screen -mx-6 -mt-40 overflow-visible">
       {/* Fade edges */}
-      <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#0a0502] to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#0a0502] to-transparent z-10 pointer-events-none" />
+      <div className="absolute left-0 top-40 bottom-0 w-16 bg-gradient-to-r from-[#0a0502] to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-40 bottom-0 w-16 bg-gradient-to-l from-[#0a0502] to-transparent z-10 pointer-events-none" />
 
       <div
         ref={trackRef}
-        className="flex items-end gap-3 px-20 pt-8 pb-4 overflow-x-auto"
+        className="flex items-end gap-3 px-20 pt-40 pb-4 overflow-x-auto"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {books.map((book, i) => (
