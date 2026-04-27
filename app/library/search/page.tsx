@@ -4,13 +4,22 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { useRef, useState, useMemo, useCallback, useEffect } from "react";
 import { ViewTransition } from "react";
+import { useRouter } from "next/navigation";
 import { books } from "../../books-data";
 import type { Book } from "../../books-data";
 import { OpenBook, darkenColor } from "../../components";
 import type { SpineRect } from "../../components";
-import { BackButton } from "../library-components";
+import { BackButton, rotateBooks } from "../library-components";
 
 gsap.registerPlugin(useGSAP);
+
+/* ── Categories ── */
+
+const categories = [
+  { name: "Fiction", href: "/library/fiction", color1: "#3e6080", color2: "#6eb7ff", color3: "#004b66", offset: 0, shelfIndex: 0, label: "Section I · Fiction" },
+  { name: "Essays", href: "/library/essays", color1: "#8e54e9", color2: "#ff1a7f", color3: "#70647a", offset: 9, shelfIndex: 1, label: "Section II · Essays" },
+  { name: "Classics", href: "/library/classics", color1: "#004b66", color2: "#f89b21", color3: "#d72131", offset: 17, shelfIndex: 2, label: "Section III · Classics" },
+] as const;
 
 /* ── Pixel art decorations ── */
 
@@ -54,6 +63,96 @@ function FloatingParticle({ delay, x }: { delay: number; x: number }) {
 }
 
 /* ── Mini book cover for the horizontal row ── */
+
+/* ── Category card for the category row ── */
+
+function MiniShelfCategory({
+  category,
+  isMatch,
+  liftPx,
+  isTargeted,
+}: {
+  category: typeof categories[number];
+  isMatch: boolean;
+  liftPx: number;
+  isTargeted: boolean;
+}) {
+  const router = useRouter();
+  const scale = isMatch ? (isTargeted ? 1.15 : 1 + liftPx / 400) : 0.85;
+  const roomBooks = rotateBooks(books, category.offset);
+
+  return (
+    <div
+      onClick={() => router.push(`${category.href}?from=search`, { transitionTypes: ["navigate-forward"] })}
+      className="shrink-0 cursor-pointer group self-end flex flex-col items-center"
+      style={{
+        transition: "opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+        opacity: isMatch ? 1 : 0.2,
+        transform: isMatch
+          ? `translateY(-${liftPx}px) scale(${scale})`
+          : "translateY(0) scale(0.85)",
+      }}
+    >
+      <div className="relative">
+        {isTargeted && (
+          <div className="absolute -inset-3 pointer-events-none z-20">
+            <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[#c9a86a]" />
+            <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-[#c9a86a]" />
+            <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[#c9a86a]" />
+            <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[#c9a86a]" />
+          </div>
+        )}
+        <div
+          className="rounded-sm overflow-hidden flex flex-col group-hover:scale-105 transition-all"
+          style={{
+            width: 88,
+            height: 110,
+            backgroundColor: "#1a0f0a",
+            border: "1px solid #c9a86a33",
+            boxShadow: isTargeted
+              ? "0 8px 24px rgba(201,168,106,0.25), 0 4px 12px rgba(0,0,0,0.7)"
+              : isMatch
+                ? `0 4px 16px rgba(0,0,0,0.5)`
+                : "0 2px 4px rgba(0,0,0,0.3)",
+            transition: "box-shadow 0.4s ease",
+          }}
+        >
+          {/* Mini book spines */}
+          <div className="flex items-end justify-center gap-[1px] px-2 pt-3 flex-1">
+            {roomBooks.slice(0, 8).map((book, i) => (
+              <div
+                key={`${category.name}-spine-${i}`}
+                className="rounded-t-[1px]"
+                style={{
+                  width: 6,
+                  height: 20 + (book.height / 360) * 30,
+                  backgroundColor: book.bgColor,
+                  flexShrink: 0,
+                }}
+              />
+            ))}
+          </div>
+          {/* Shelf line */}
+          <div style={{ height: 2, background: "#4a2d1a", margin: "0 6px" }} />
+          {/* Label */}
+          <div className="flex flex-col items-center justify-center py-2 px-1">
+            <span className="font-label text-[8px] tracking-[0.15em] uppercase text-[#c9a86a] whitespace-nowrap">
+              {category.name}
+            </span>
+            <span className="font-label text-[6px] tracking-[0.1em] uppercase text-[#c9a86a]/40 mt-0.5">
+              {roomBooks.length} tomes
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className={`mt-1.5 transition-opacity pointer-events-none ${isTargeted ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}>
+        <p className="font-label text-[8px] tracking-[0.1em] text-[#c9a86a] text-center whitespace-nowrap">
+          {category.name} Room
+        </p>
+      </div>
+    </div>
+  );
+}
 
 function MiniBook({
   book,
@@ -166,6 +265,47 @@ function MiniBook({
   );
 }
 
+/* ── Horizontal scrolling category row ── */
+
+function CategoryRow({ query }: { query: string }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const matchingCategories = useMemo(() => {
+    if (!query.trim()) return new Set(categories.map((_, i) => i));
+    const q = query.toLowerCase();
+    const set = new Set<number>();
+    categories.forEach((c, i) => {
+      if (c.name.toLowerCase().includes(q)) set.add(i);
+    });
+    return set;
+  }, [query]);
+
+  const isSearching = query.trim().length > 0;
+  const liftPx = isSearching && matchingCategories.size > 0
+    ? Math.round(10 + (1 - matchingCategories.size / categories.length) * 30)
+    : 0;
+
+  return (
+    <div className="relative w-full overflow-hidden">
+      <div
+        ref={trackRef}
+        className="flex items-end justify-center gap-4 px-6 pt-6 pb-4 overflow-x-auto"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {categories.map((cat, i) => (
+          <MiniShelfCategory
+            key={cat.name}
+            category={cat}
+            isMatch={matchingCategories.has(i)}
+            liftPx={matchingCategories.has(i) ? liftPx : 0}
+            isTargeted={matchingCategories.has(i) && matchingCategories.size === 1 && isSearching}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ── Horizontal scrolling book row ── */
 
 function BookRow({
@@ -191,7 +331,6 @@ function BookRow({
     return set;
   }, [query]);
 
-  // Fewer matches → higher lift (0 matches = 0, 1 match = max lift)
   const matchCount = matchIndices.size;
   const isSearching = query.trim().length > 0;
   const liftPx = isSearching && matchCount > 0
@@ -255,7 +394,7 @@ function BookRow({
 
       <div
         ref={trackRef}
-        className="flex items-end gap-3 px-20 pt-40 pb-6 overflow-x-auto"
+        className="flex items-end gap-3 px-20 pt-8 pb-4 overflow-x-auto"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {books.map((book, i) => (
@@ -308,11 +447,15 @@ export default function SearchPage() {
   }, { dependencies: [] });
 
   const matchCount = useMemo(() => {
-    if (!query.trim()) return books.length;
+    if (!query.trim()) return books.length + categories.length;
     const q = query.toLowerCase();
-    return books.filter(
+    const bookMatches = books.filter(
       (b) => b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q),
     ).length;
+    const catMatches = categories.filter(
+      (c) => c.name.toLowerCase().includes(q),
+    ).length;
+    return bookMatches + catMatches;
   }, [query]);
 
   const handleOpen = useCallback((book: Book, rect: SpineRect) => {
@@ -346,9 +489,9 @@ export default function SearchPage() {
 
         <BackButton href="/library" label="Back to Reception" />
 
-        <div className="relative w-full max-w-[750px] px-6 z-10 pt-20 flex flex-col items-center">
+        <div className="relative w-full max-w-[750px] px-6 z-10 pt-16 flex flex-col items-center">
           {/* Header */}
-          <div ref={headingRef} className="text-center mb-6 relative">
+          <div ref={headingRef} className="text-center mb-4 relative">
             <p className="font-label uppercase tracking-[0.55em] text-xs mb-2" style={{ color: "#c9a86a" }}>
               The Archives
             </p>
@@ -367,7 +510,7 @@ export default function SearchPage() {
           </div>
 
           {/* Open scroll search area */}
-          <div ref={scrollRef} className="relative w-full mb-8">
+          <div ref={scrollRef} className="relative w-full mb-4">
             <div ref={candleLeftRef} className="absolute -left-8 top-2 z-20">
               <PixelCandle />
             </div>
@@ -418,8 +561,15 @@ export default function SearchPage() {
           </div>
         </div>
 
-        {/* Horizontal book row — full width, fills remaining space */}
+        {/* Category row */}
+        <div className="relative z-10 w-full">
+          <p className="font-label text-[9px] tracking-[0.3em] uppercase text-[#c9a86a]/50 text-center mb-1">Rooms</p>
+          <CategoryRow query={query} />
+        </div>
+
+        {/* Book row — full width, fills remaining space */}
         <div className="relative z-10 mt-auto w-full">
+          <p className="font-label text-[9px] tracking-[0.3em] uppercase text-[#c9a86a]/50 text-center mb-1">Tomes</p>
           <BookRow query={query} onOpen={handleOpen} />
           {matchCount === 0 && (
             <p className="text-center font-label text-sm text-[#c9a86a]/40 mt-4">

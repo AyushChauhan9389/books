@@ -226,7 +226,7 @@ export function LibraryFrame({ children }: { children: React.ReactNode }) {
 
 /* ── BackButton ── */
 
-export function BackButton({ href = "/", transitionType = "navigate-back", label = "Back" }: { href?: string, transitionType?: string, label?: string }) {
+export function BackButton({ href, transitionType = "navigate-back", label = "Back", useHistoryBack = false }: { href?: string, transitionType?: string, label?: string, useHistoryBack?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -243,16 +243,22 @@ export function BackButton({ href = "/", transitionType = "navigate-back", label
     { dependencies: [] },
   );
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (useHistoryBack) {
+      router.back();
+    } else {
+      router.push(href ?? "/", {
+        transitionTypes: [transitionType],
+      });
+    }
+  };
+
   return (
     <div ref={ref} className="absolute top-6 left-6 z-30">
       <Link
-        href={href}
-        onClick={(e) => {
-          e.preventDefault();
-          router.push(href, {
-            transitionTypes: [transitionType],
-          });
-        }}
+        href={href ?? "/"}
+        onClick={handleClick}
         className="flex items-center gap-3 px-5 py-3 bg-black/25 backdrop-blur-md border border-white/15 rounded-full text-white font-label text-xs uppercase tracking-[0.25em] hover:bg-white/15 transition-colors"
       >
         <svg

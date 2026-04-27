@@ -2,7 +2,7 @@
 
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
-import { useParams, notFound } from "next/navigation";
+import { useParams, useSearchParams, notFound } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { ViewTransition } from "react";
 import { books } from "../../books-data";
@@ -16,6 +16,10 @@ gsap.registerPlugin(useGSAP);
 export default function RoomPage() {
   const params = useParams();
   const room = params.room as string;
+  const searchParams = useSearchParams();
+  const from = searchParams.get("from");
+  const backHref = from === "search" ? "/library/search" : "/library";
+  const backLabel = from === "search" ? "Back to Search" : "Back to Reception";
 
   const [openBook, setOpenBook] = useState<{
     book: Book;
@@ -47,17 +51,27 @@ export default function RoomPage() {
   }, []);
 
   let shelfData;
+  let shelves: { books: Book[]; shelfIndex: number; label: string }[];
+
   if (room === "fiction") {
-    shelfData = { offset: 0, shelfIndex: 0, label: "Section I · Fiction" };
+    const roomBooks = rotateBooks(books, 0);
+    shelfData = { label: "Fiction" };
+    shelves = [{ books: roomBooks, shelfIndex: 0, label: "Section I · Fiction" }];
   } else if (room === "essays") {
-    shelfData = { offset: 9, shelfIndex: 1, label: "Section II · Essays" };
+    const allBooks = rotateBooks(books, 9);
+    shelfData = { label: "Essays" };
+    shelves = [
+      { books: allBooks, shelfIndex: 0, label: "Section II-A · Essays" },
+      { books: rotateBooks(books, 0), shelfIndex: 1, label: "Section II-B · Essays" },
+      { books: rotateBooks(books, 17), shelfIndex: 2, label: "Section II-C · Essays" },
+    ];
   } else if (room === "classics") {
-    shelfData = { offset: 17, shelfIndex: 2, label: "Section III · Classics" };
+    const roomBooks = rotateBooks(books, 17);
+    shelfData = { label: "Classics" };
+    shelves = [{ books: roomBooks, shelfIndex: 2, label: "Section III · Classics" }];
   } else {
     return notFound();
   }
-
-  const roomBooks = rotateBooks(books, shelfData.offset);
 
   return (
     <ViewTransition
@@ -74,7 +88,7 @@ export default function RoomPage() {
       }}
       update="none"
     >
-      <div className="relative w-screen h-screen flex flex-col items-center justify-center overflow-hidden">
+      <div className={`relative w-screen ${shelves.length > 1 ? "min-h-screen overflow-y-auto" : "h-screen overflow-hidden"} flex flex-col items-center justify-center`}>
         {/* Warm indoor ambient overlay */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -84,10 +98,10 @@ export default function RoomPage() {
           }}
         />
 
-        <BackButton href="/library" label="Back to Reception" />
+        <BackButton href={backHref} label={backLabel} />
 
-        <div className="relative w-full max-w-[1200px] px-6 z-10 pt-10">
-          <div ref={headingRef} className="text-center mb-8 relative">
+        <div className={`relative w-full max-w-[1200px] px-6 z-10 ${shelves.length > 1 ? "pt-16 pb-8" : "pt-10"}`}>
+          <div ref={headingRef} className={`text-center ${shelves.length > 1 ? "mb-4" : "mb-8"} relative`}>
             <p
               className="font-label uppercase tracking-[0.55em] text-xs mb-2 relative z-10"
               style={{ color: "#c9a86a" }}
@@ -124,15 +138,20 @@ export default function RoomPage() {
             </svg>
           </div>
 
-          <LibraryFrame>
-            <LibraryShelf
-              shelf={roomBooks}
-              shelfIndex={shelfData.shelfIndex}
-              openId={openBook?.id ?? null}
-              onOpen={handleOpen}
-              label={shelfData.label}
-            />
-          </LibraryFrame>
+          <div className={shelves.length > 1 ? "origin-top scale-[0.65] md:scale-[0.8] lg:scale-100" : ""}>
+            <LibraryFrame>
+              {shelves.map((shelf) => (
+                <LibraryShelf
+                  key={shelf.label}
+                  shelf={shelf.books}
+                  shelfIndex={shelf.shelfIndex}
+                  openId={openBook?.id ?? null}
+                  onOpen={handleOpen}
+                  label={shelf.label}
+                />
+              ))}
+            </LibraryFrame>
+          </div>
         </div>
 
         {openBook && (

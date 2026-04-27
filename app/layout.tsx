@@ -4,8 +4,8 @@ import { WeatherShell } from "./weather-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Books of 2025 — A Year In Reading",
-  description: "A curated digital bookshelf of books read in 2025",
+  title: "Promptlet — A Year In Reading",
+  description: "A curated digital bookshelf of prompts read in 2026",
 };
 
 export default function RootLayout({

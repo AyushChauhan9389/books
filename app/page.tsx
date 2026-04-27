@@ -154,9 +154,9 @@ export default function Home() {
             A Year In
           </p>
           <h1 className="text-7xl md:text-8xl font-headline font-black text-white tracking-tight leading-none">
-            BOOKS OF
+            PROMPTS OF
             <br />
-            2025
+            2026
           </h1>
         </div>
 
