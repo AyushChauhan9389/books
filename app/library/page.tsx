@@ -86,20 +86,68 @@ function PixelBell() {
   );
 }
 
-function PixelScroll() {
+function PixelOpenScroll() {
   return (
-    <svg width="48" height="24" viewBox="0 0 12 6" style={{ imageRendering: "pixelated" }}>
-      {/* Scroll body */}
-      <rect x="1" y="1" width="10" height="4" fill="#f5e9cf" />
-      <rect x="2" y="2" width="8" height="1" fill="#d4c3a3" opacity="0.5" />
-      <rect x="2" y="4" width="6" height="1" fill="#d4c3a3" opacity="0.3" />
+    <svg width="100" height="64" viewBox="0 0 25 16" style={{ imageRendering: "pixelated" }}>
       {/* Left roll */}
-      <rect x="0" y="0" width="2" height="6" fill="#c9a86a" />
-      <rect x="0" y="0" width="1" height="6" fill="#b8944f" />
+      <rect x="0" y="0" width="2" height="16" fill="#c9a86a" />
+      <rect x="0" y="0" width="1" height="16" fill="#b8944f" />
       {/* Right roll */}
-      <rect x="10" y="0" width="2" height="6" fill="#c9a86a" />
-      <rect x="11" y="0" width="1" height="6" fill="#a07830" />
+      <rect x="23" y="0" width="2" height="16" fill="#c9a86a" />
+      <rect x="24" y="0" width="1" height="16" fill="#a07830" />
+      {/* Parchment body */}
+      <rect x="2" y="1" width="21" height="14" fill="#f5e9cf" />
+      {/* Text lines */}
+      <rect x="5" y="3" width="15" height="1" fill="#8b7355" opacity="0.5" />
+      <rect x="5" y="5" width="12" height="1" fill="#8b7355" opacity="0.4" />
+      <rect x="5" y="7" width="14" height="1" fill="#8b7355" opacity="0.5" />
+      <rect x="5" y="9" width="10" height="1" fill="#8b7355" opacity="0.3" />
+      <rect x="5" y="11" width="13" height="1" fill="#8b7355" opacity="0.4" />
+      {/* Magnifying glass icon */}
+      <circle cx="18" cy="11" r="2" fill="none" stroke="#8b7355" strokeWidth="0.8" opacity="0.6" />
+      <rect x="19.5" y="12.5" width="2" height="0.8" fill="#8b7355" opacity="0.6" transform="rotate(45 19.5 12.5)" />
     </svg>
+  );
+}
+
+function ClickableOpenScroll({ delay }: { delay: number }) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const router = useRouter();
+
+  useGSAP(
+    () => {
+      gsap.from(ref.current, {
+        opacity: 0,
+        y: -20,
+        duration: 0.6,
+        delay,
+        ease: "bounce.out(1.2)",
+        clearProps: "transform,opacity",
+      });
+    },
+    { dependencies: [] },
+  );
+
+  return (
+    <Link
+      ref={ref}
+      href="/library/search"
+      onClick={(e) => {
+        e.preventDefault();
+        router.push("/library/search", { transitionTypes: ["navigate-forward"] });
+      }}
+      className="group relative flex flex-col items-center cursor-pointer hover:scale-110 hover:-translate-y-2"
+      style={{ transition: "transform 0.2s ease" }}
+    >
+      <div style={{ filter: "drop-shadow(0 6px 10px rgba(0,0,0,0.6))" }}>
+        <PixelOpenScroll />
+      </div>
+      <div className="absolute top-full mt-1 bg-[#1a0f0a] border border-[#c9a86a]/40 px-3 py-0.5 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+        <span className="font-label text-[9px] tracking-[0.2em] uppercase text-[#c9a86a] whitespace-nowrap">
+          Search Books
+        </span>
+      </div>
+    </Link>
   );
 }
 
@@ -223,8 +271,8 @@ function VillagerLibrarian() {
   );
 
   return (
-    <div ref={villagerRef} className="relative" style={{ height: 200, filter: "drop-shadow(0 20px 20px rgba(0,0,0,0.7))", maskImage: "linear-gradient(to bottom, black 60%, transparent 100%)", WebkitMaskImage: "linear-gradient(to bottom, black 60%, transparent 100%)" }}>
-      <MinecraftSkin src="/noob-villager1.png" width={180} height={320} />
+    <div ref={villagerRef} className="relative" style={{ height: 320, filter: "drop-shadow(0 20px 20px rgba(0,0,0,0.7))" }}>
+      <MinecraftSkin src="/noob-villager1.png" width={300} height={320} />
     </div>
   );
 }
@@ -313,7 +361,7 @@ export default function LibraryReceptionPage() {
           {/* Librarian & Desk Area */}
           <div className="relative flex flex-col items-center">
             {/* Villager behind the desk — overlaps into desk area */}
-            <div className="relative z-10" style={{ marginBottom: -50 }}>
+            <div className="relative z-10" style={{ marginBottom: -110 }}>
               <VillagerLibrarian />
             </div>
 
@@ -322,10 +370,30 @@ export default function LibraryReceptionPage() {
               {/* The Desk */}
               <ReceptionDeskSVG />
 
-              {/* Items sitting ON the desk surface — use bottom-[100%] so they sit flush on top */}
+              {/* Items ON the desk: props left, scroll center, books right */}
 
-              {/* Left — Fiction book stack */}
-              <div className="absolute left-10 bottom-[100%] z-30">
+              {/* Left — lamp */}
+              <div className="absolute left-10 bottom-[100%] z-30" style={{ filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.5))" }}>
+                <PixelLamp />
+              </div>
+
+              {/* Left-center — inkwell */}
+              <div className="absolute left-[160px] bottom-[100%] z-30" style={{ filter: "drop-shadow(0 3px 5px rgba(0,0,0,0.4))" }}>
+                <PixelInkwell />
+              </div>
+
+              {/* Left — bell */}
+              <div className="absolute left-[280px] bottom-[100%] z-30" style={{ filter: "drop-shadow(0 3px 5px rgba(0,0,0,0.4))" }}>
+                <PixelBell />
+              </div>
+
+              {/* Center — open scroll (search) */}
+              <div className="absolute left-1/2 -translate-x-1/2 bottom-[100%] z-30">
+                <ClickableOpenScroll delay={0.55} />
+              </div>
+
+              {/* Right — Fiction book stack */}
+              <div className="absolute right-[240px] bottom-[100%] z-30">
                 <ClickableBookStack
                   title="Fiction Room"
                   href="/library/fiction"
@@ -336,18 +404,8 @@ export default function LibraryReceptionPage() {
                 />
               </div>
 
-              {/* Left-center — lamp */}
-              <div className="absolute left-[200px] bottom-[100%] z-30" style={{ filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.5))" }}>
-                <PixelLamp />
-              </div>
-
-              {/* Center-left — inkwell */}
-              <div className="absolute left-[340px] bottom-[100%] z-30" style={{ filter: "drop-shadow(0 3px 5px rgba(0,0,0,0.4))" }}>
-                <PixelInkwell />
-              </div>
-
-              {/* Center — Essays book stack */}
-              <div className="absolute left-1/2 -translate-x-1/2 bottom-[100%] z-30">
+              {/* Right-center — Essays book stack */}
+              <div className="absolute right-[130px] bottom-[100%] z-30">
                 <ClickableBookStack
                   title="Essays Room"
                   href="/library/essays"
@@ -358,17 +416,7 @@ export default function LibraryReceptionPage() {
                 />
               </div>
 
-              {/* Center-right — scroll */}
-              <div className="absolute right-[340px] bottom-[100%] z-30" style={{ filter: "drop-shadow(0 3px 5px rgba(0,0,0,0.4))" }}>
-                <PixelScroll />
-              </div>
-
-              {/* Right-center — bell */}
-              <div className="absolute right-[200px] bottom-[100%] z-30" style={{ filter: "drop-shadow(0 3px 5px rgba(0,0,0,0.4))" }}>
-                <PixelBell />
-              </div>
-
-              {/* Right — Classics book stack */}
+              {/* Far right — Classics book stack */}
               <div className="absolute right-10 bottom-[100%] z-30">
                 <ClickableBookStack
                   title="Classics Room"

@@ -418,9 +418,9 @@ export function OpenBook({
               />
 
               <div
-                className={`absolute inset-0 flex flex-col items-center justify-between py-4 ${book.textColor}`}
+                className={`absolute inset-0 flex flex-col items-center justify-between py-4 overflow-hidden ${book.textColor}`}
                 style={{
-                  opacity: isSmall ? 1 : 0,
+                  opacity: isSmall && spineRect.height > spineRect.width * 3 ? 1 : 0,
                   transition: "opacity 0.2s ease",
                   pointerEvents: "none",
                 }}
