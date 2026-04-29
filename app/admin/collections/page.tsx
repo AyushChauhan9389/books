@@ -9,18 +9,15 @@ import { CollectionList } from "../components/collection-list";
 import { ConfirmDialog } from "../components/confirm-dialog";
 import { useNotification } from "../components/notification";
 import { PageHeader } from "../components/page-header";
-import { ThemedButton } from "../components/themed-ui";
+import { PrimaryButton } from "../components/themed-ui";
 
 export default function CollectionsPage() {
   const [collections, setCollections] = useState<Collection[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [editingCollection, setEditingCollection] = useState<Collection | null>(
-    null,
-  );
+  const [editingCollection, setEditingCollection] = useState<Collection | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const [deletingCollection, setDeletingCollection] =
-    useState<Collection | null>(null);
+  const [deletingCollection, setDeletingCollection] = useState<Collection | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   const { addNotification } = useNotification();
@@ -33,92 +30,47 @@ export default function CollectionsPage() {
       const data = await adminFetch<Collection[]>("/api/admin/collections");
       setCollections(data);
     } catch (err) {
-      const message =
-        err instanceof ApiError
-          ? err.message
-          : "Failed to load collections. Please try again.";
-      setError(message);
+      setError(err instanceof ApiError ? err.message : "Failed to load collections.");
     } finally {
       setLoading(false);
     }
   }, []);
 
-  useEffect(() => {
-    fetchCollections();
-  }, [fetchCollections]);
-
-  function handleEdit(collection: Collection) {
-    setEditingCollection(collection);
-  }
-
-  function handleEditSave(updatedCollection: Collection) {
-    setCollections((prev) =>
-      prev.map((c) => (c.id === updatedCollection.id ? updatedCollection : c)),
-    );
-    setEditingCollection(null);
-  }
-
-  function handleCreateSave(newCollection: Collection) {
-    setCollections((prev) => [...prev, newCollection]);
-    setShowCreateForm(false);
-  }
-
-  function handleManageBooks(collection: Collection) {
-    router.push(`/admin/collections/${collection.id}/books`);
-  }
-
-  function handleDeleteRequest(collection: Collection) {
-    setDeletingCollection(collection);
-  }
+  useEffect(() => { fetchCollections(); }, [fetchCollections]);
 
   async function handleDeleteConfirm() {
     if (!deletingCollection) return;
-
     setDeleteLoading(true);
     try {
-      await adminFetch(`/api/admin/collections/${deletingCollection.id}`, {
-        method: "DELETE",
-      });
-      setCollections((prev) =>
-        prev.filter((c) => c.id !== deletingCollection.id),
-      );
-      addNotification(
-        "success",
-        `"${deletingCollection.name}" deleted successfully`,
-      );
+      await adminFetch(`/api/admin/collections/${deletingCollection.id}`, { method: "DELETE" });
+      setCollections((prev) => prev.filter((c) => c.id !== deletingCollection.id));
+      addNotification("success", `"${deletingCollection.name}" deleted`);
       setDeletingCollection(null);
     } catch (err) {
-      const message =
-        err instanceof ApiError
-          ? err.message
-          : "Failed to delete collection. Please try again.";
-      addNotification("error", message);
+      addNotification("error", err instanceof ApiError ? err.message : "Failed to delete collection.");
     } finally {
       setDeleteLoading(false);
     }
-  }
-
-  function handleDeleteCancel() {
-    setDeletingCollection(null);
   }
 
   return (
     <div>
       <PageHeader
         title="Collections"
+        subtitle="Organize books into themed rooms"
         decoration="chest"
         action={
-          <ThemedButton onClick={() => setShowCreateForm(true)}>
-            New Collection
-          </ThemedButton>
+          <PrimaryButton onClick={() => setShowCreateForm(true)}>
+            + New Collection
+          </PrimaryButton>
         }
       />
 
       <CollectionList
         collections={collections}
-        onEdit={handleEdit}
-        onDelete={handleDeleteRequest}
-        onManageBooks={handleManageBooks}
+        onEdit={setEditingCollection}
+        onDelete={setDeletingCollection}
+        onManageBooks={(c) => router.push(`/admin/collections/${c.id}/books`)}
         loading={loading}
         error={error}
         onRetry={fetchCollections}
@@ -126,7 +78,7 @@ export default function CollectionsPage() {
 
       {showCreateForm && (
         <CollectionForm
-          onSave={handleCreateSave}
+          onSave={(newCol) => { setCollections((prev) => [...prev, newCol]); setShowCreateForm(false); }}
           onClose={() => setShowCreateForm(false)}
         />
       )}
@@ -134,7 +86,7 @@ export default function CollectionsPage() {
       {editingCollection && (
         <CollectionForm
           collection={editingCollection}
-          onSave={handleEditSave}
+          onSave={(updated) => { setCollections((prev) => prev.map((c) => (c.id === updated.id ? updated : c))); setEditingCollection(null); }}
           onClose={() => setEditingCollection(null)}
         />
       )}
@@ -142,9 +94,9 @@ export default function CollectionsPage() {
       {deletingCollection && (
         <ConfirmDialog
           title={`Delete "${deletingCollection.name}"?`}
-          message={`Are you sure you want to delete "${deletingCollection.name}"? This will remove all book memberships in this collection.`}
+          message="This will remove the collection and all book memberships within it."
           onConfirm={handleDeleteConfirm}
-          onCancel={handleDeleteCancel}
+          onCancel={() => setDeletingCollection(null)}
           loading={deleteLoading}
         />
       )}

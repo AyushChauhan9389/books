@@ -8,7 +8,7 @@ import { BookList } from "../components/book-list";
 import { ConfirmDialog } from "../components/confirm-dialog";
 import { useNotification } from "../components/notification";
 import { PageHeader } from "../components/page-header";
-import { ThemedButton } from "../components/themed-ui";
+import { PrimaryButton } from "../components/themed-ui";
 
 export default function BooksPage() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -28,85 +28,46 @@ export default function BooksPage() {
       const data = await adminFetch<Book[]>("/api/admin/books");
       setBooks(data);
     } catch (err) {
-      const message =
-        err instanceof ApiError
-          ? err.message
-          : "Failed to load books. Please try again.";
-      setError(message);
+      setError(err instanceof ApiError ? err.message : "Failed to load books.");
     } finally {
       setLoading(false);
     }
   }, []);
 
-  useEffect(() => {
-    fetchBooks();
-  }, [fetchBooks]);
-
-  function handleEdit(book: Book) {
-    setEditingBook(book);
-  }
-
-  function handleEditSave(updatedBook: Book) {
-    setBooks((prev) =>
-      prev.map((b) => (b.id === updatedBook.id ? updatedBook : b)),
-    );
-    setEditingBook(null);
-  }
-
-  function handleCreateSave(newBook: Book) {
-    setBooks((prev) => [...prev, newBook]);
-    setShowCreateForm(false);
-  }
-
-  function handleDeleteRequest(book: Book) {
-    setDeletingBook(book);
-  }
+  useEffect(() => { fetchBooks(); }, [fetchBooks]);
 
   async function handleDeleteConfirm() {
     if (!deletingBook) return;
-
     setDeleteLoading(true);
     try {
-      await adminFetch(`/api/admin/books/${deletingBook.id}`, {
-        method: "DELETE",
-      });
+      await adminFetch(`/api/admin/books/${deletingBook.id}`, { method: "DELETE" });
       setBooks((prev) => prev.filter((b) => b.id !== deletingBook.id));
-      addNotification(
-        "success",
-        `"${deletingBook.title}" deleted successfully`,
-      );
+      addNotification("success", `"${deletingBook.title}" deleted`);
       setDeletingBook(null);
     } catch (err) {
-      const message =
-        err instanceof ApiError
-          ? err.message
-          : "Failed to delete book. Please try again.";
-      addNotification("error", message);
+      addNotification("error", err instanceof ApiError ? err.message : "Failed to delete book.");
     } finally {
       setDeleteLoading(false);
     }
-  }
-
-  function handleDeleteCancel() {
-    setDeletingBook(null);
   }
 
   return (
     <div>
       <PageHeader
         title="Books"
+        subtitle={`Manage your library's collection of tomes`}
         decoration="book"
         action={
-          <ThemedButton onClick={() => setShowCreateForm(true)}>
-            New Book
-          </ThemedButton>
+          <PrimaryButton onClick={() => setShowCreateForm(true)}>
+            + New Book
+          </PrimaryButton>
         }
       />
 
       <BookList
         books={books}
-        onEdit={handleEdit}
-        onDelete={handleDeleteRequest}
+        onEdit={setEditingBook}
+        onDelete={setDeletingBook}
         loading={loading}
         error={error}
         onRetry={fetchBooks}
@@ -114,7 +75,7 @@ export default function BooksPage() {
 
       {showCreateForm && (
         <BookForm
-          onSave={handleCreateSave}
+          onSave={(newBook) => { setBooks((prev) => [...prev, newBook]); setShowCreateForm(false); }}
           onClose={() => setShowCreateForm(false)}
         />
       )}
@@ -122,7 +83,7 @@ export default function BooksPage() {
       {editingBook && (
         <BookForm
           book={editingBook}
-          onSave={handleEditSave}
+          onSave={(updated) => { setBooks((prev) => prev.map((b) => (b.id === updated.id ? updated : b))); setEditingBook(null); }}
           onClose={() => setEditingBook(null)}
         />
       )}
@@ -130,9 +91,9 @@ export default function BooksPage() {
       {deletingBook && (
         <ConfirmDialog
           title={`Delete "${deletingBook.title}"?`}
-          message={`Are you sure you want to delete "${deletingBook.title}"? This will also remove it from all collections.`}
+          message="This will permanently remove the book and its membership in all collections."
           onConfirm={handleDeleteConfirm}
-          onCancel={handleDeleteCancel}
+          onCancel={() => setDeletingBook(null)}
           loading={deleteLoading}
         />
       )}

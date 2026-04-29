@@ -6,100 +6,45 @@ import type { ReactNode } from "react";
 
 function PixelBook({ className }: { className?: string }) {
   return (
-    <svg
-      width="24"
-      height="28"
-      viewBox="0 0 12 14"
-      style={{ imageRendering: "pixelated" }}
-      className={className}
-    >
+    <svg width="28" height="32" viewBox="0 0 14 16" style={{ imageRendering: "pixelated" }} className={className}>
       <title>Book</title>
-      {/* Cover */}
-      <rect x="2" y="1" width="8" height="12" fill="#8b2020" />
-      <rect x="1" y="1" width="1" height="12" fill="#c9a86a" />
-      {/* Pages */}
-      <rect x="3" y="2" width="6" height="10" fill="#f5e9cf" />
-      {/* Text lines */}
-      <rect x="4" y="3" width="4" height="1" fill="#2a1810" opacity="0.3" />
-      <rect x="4" y="5" width="3" height="1" fill="#2a1810" opacity="0.3" />
-      <rect x="4" y="7" width="4" height="1" fill="#2a1810" opacity="0.3" />
-      <rect x="4" y="9" width="2" height="1" fill="#2a1810" opacity="0.3" />
+      <rect x="3" y="1" width="9" height="14" fill="#8b2020" />
+      <rect x="2" y="1" width="1" height="14" fill="#c9a86a" />
+      <rect x="4" y="2" width="7" height="12" fill="#f5e9cf" />
+      <rect x="5" y="4" width="5" height="1" fill="#2a1810" opacity="0.25" />
+      <rect x="5" y="6" width="4" height="1" fill="#2a1810" opacity="0.25" />
+      <rect x="5" y="8" width="5" height="1" fill="#2a1810" opacity="0.25" />
+      <rect x="5" y="10" width="3" height="1" fill="#2a1810" opacity="0.25" />
     </svg>
   );
 }
 
 function PixelChest({ className }: { className?: string }) {
   return (
-    <svg
-      width="28"
-      height="24"
-      viewBox="0 0 14 12"
-      style={{ imageRendering: "pixelated" }}
-      className={className}
-    >
+    <svg width="32" height="28" viewBox="0 0 16 14" style={{ imageRendering: "pixelated" }} className={className}>
       <title>Chest</title>
-      {/* Body */}
-      <rect x="1" y="3" width="12" height="8" fill="#785023" />
-      <rect x="1" y="3" width="12" height="3" fill="#996a33" />
-      {/* Lock */}
-      <rect x="6" y="5" width="2" height="3" fill="#cfcfcc" />
-      {/* Lid line */}
-      <rect x="1" y="3" width="12" height="1" fill="#2c1a07" />
-      {/* Feet */}
-      <rect x="2" y="11" width="2" height="1" fill="#4a2d1a" />
-      <rect x="10" y="11" width="2" height="1" fill="#4a2d1a" />
+      <rect x="1" y="4" width="14" height="9" fill="#785023" />
+      <rect x="1" y="4" width="14" height="4" fill="#996a33" />
+      <rect x="7" y="6" width="2" height="3" fill="#cfcfcc" />
+      <rect x="1" y="4" width="14" height="1" fill="#2c1a07" />
     </svg>
   );
 }
 
 function PixelScroll({ className }: { className?: string }) {
   return (
-    <svg
-      width="24"
-      height="28"
-      viewBox="0 0 12 14"
-      style={{ imageRendering: "pixelated" }}
-      className={className}
-    >
+    <svg width="28" height="32" viewBox="0 0 14 16" style={{ imageRendering: "pixelated" }} className={className}>
       <title>Scroll</title>
-      {/* Top roll */}
-      <rect x="2" y="0" width="8" height="2" fill="#d4b896" />
-      <rect x="1" y="0" width="1" height="2" fill="#8b6914" />
-      <rect x="10" y="0" width="1" height="2" fill="#8b6914" />
-      {/* Paper body */}
-      <rect x="2" y="2" width="8" height="9" fill="#f5e9cf" />
-      {/* Text lines */}
-      <rect x="3" y="3" width="6" height="1" fill="#2a1810" opacity="0.3" />
-      <rect x="3" y="5" width="5" height="1" fill="#2a1810" opacity="0.3" />
-      <rect x="3" y="7" width="6" height="1" fill="#2a1810" opacity="0.3" />
-      <rect x="3" y="9" width="4" height="1" fill="#2a1810" opacity="0.3" />
-      {/* Bottom roll */}
-      <rect x="2" y="11" width="8" height="2" fill="#d4b896" />
-      <rect x="1" y="11" width="1" height="2" fill="#8b6914" />
-      <rect x="10" y="11" width="1" height="2" fill="#8b6914" />
-    </svg>
-  );
-}
-
-/** Decorative divider line with diamond center — matches login page style */
-function OrnamentDivider() {
-  return (
-    <svg
-      className="w-full h-3 opacity-20"
-      viewBox="0 0 400 12"
-      preserveAspectRatio="xMidYMid meet"
-    >
-      <title>Ornament</title>
-      <line x1="40" y1="6" x2="175" y2="6" stroke="#c9a86a" strokeWidth="1" />
-      <line x1="225" y1="6" x2="360" y2="6" stroke="#c9a86a" strokeWidth="1" />
-      <circle cx="40" cy="6" r="2" fill="#c9a86a" />
-      <circle cx="360" cy="6" r="2" fill="#c9a86a" />
-      <path
-        d="M190,6 L200,0 L210,6 L200,12 Z"
-        fill="none"
-        stroke="#c9a86a"
-        strokeWidth="1"
-      />
+      <rect x="3" y="0" width="8" height="2" fill="#d4b896" />
+      <rect x="2" y="0" width="1" height="2" fill="#8b6914" />
+      <rect x="11" y="0" width="1" height="2" fill="#8b6914" />
+      <rect x="3" y="2" width="8" height="11" fill="#f5e9cf" />
+      <rect x="4" y="4" width="6" height="1" fill="#2a1810" opacity="0.25" />
+      <rect x="4" y="6" width="5" height="1" fill="#2a1810" opacity="0.25" />
+      <rect x="4" y="8" width="6" height="1" fill="#2a1810" opacity="0.25" />
+      <rect x="3" y="13" width="8" height="2" fill="#d4b896" />
+      <rect x="2" y="13" width="1" height="2" fill="#8b6914" />
+      <rect x="11" y="13" width="1" height="2" fill="#8b6914" />
     </svg>
   );
 }
@@ -112,30 +57,41 @@ const DECORATIONS = {
 
 type PageHeaderProps = {
   title: string;
+  subtitle?: string;
   decoration?: keyof typeof DECORATIONS;
   action?: ReactNode;
 };
 
-export function PageHeader({
-  title,
-  decoration = "book",
-  action,
-}: PageHeaderProps) {
+export function PageHeader({ title, subtitle, decoration = "book", action }: PageHeaderProps) {
   const DecoIcon = DECORATIONS[decoration];
 
   return (
-    <div className="mb-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <DecoIcon className="opacity-70" />
-          <h1 className="font-headline text-xl" style={{ color: "#f5e9cf" }}>
-            {title}
-          </h1>
+    <div className="mb-8">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <div className="opacity-60">
+            <DecoIcon />
+          </div>
+          <div>
+            <h1 className="font-headline text-2xl font-bold tracking-wide" style={{ color: "#f5e9cf" }}>
+              {title}
+            </h1>
+            {subtitle && (
+              <p className="font-body text-sm mt-0.5" style={{ color: "rgba(201,168,106,0.5)" }}>
+                {subtitle}
+              </p>
+            )}
+          </div>
         </div>
-        {action && <div>{action}</div>}
+        {action && <div className="flex-shrink-0">{action}</div>}
       </div>
-      <div className="mt-2 max-w-md">
-        <OrnamentDivider />
+      {/* Ornament line */}
+      <div className="mt-4 flex items-center gap-3">
+        <div className="flex-1 h-px" style={{ background: "linear-gradient(to right, rgba(201,168,106,0.2), transparent)" }} />
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M6 0L8 4L12 6L8 8L6 12L4 8L0 6L4 4Z" fill="rgba(201,168,106,0.15)" />
+        </svg>
+        <div className="flex-1 h-px" style={{ background: "linear-gradient(to left, rgba(201,168,106,0.2), transparent)" }} />
       </div>
     </div>
   );

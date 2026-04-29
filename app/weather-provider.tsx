@@ -2,6 +2,7 @@
 
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
+import { usePathname } from "next/navigation";
 import { createContext, useCallback, useContext, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import {
@@ -25,6 +26,8 @@ export function WeatherShell({ children }: { children: React.ReactNode }) {
   const bgRef = useRef<HTMLDivElement>(null);
   const weatherContainerRef = useRef<HTMLDivElement>(null);
   const transitioningRef = useRef(false);
+  const pathname = usePathname();
+  const isAdmin = pathname.startsWith("/admin");
 
   const handleWeatherChange = useCallback(
     (newWeather: Weather) => {
@@ -60,6 +63,15 @@ export function WeatherShell({ children }: { children: React.ReactNode }) {
     },
     [weather],
   );
+
+  // Admin pages use their own layout — skip weather background entirely
+  if (isAdmin) {
+    return (
+      <WeatherContext value={weather}>
+        {children}
+      </WeatherContext>
+    );
+  }
 
   return (
     <WeatherContext value={weather}>

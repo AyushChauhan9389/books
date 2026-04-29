@@ -2,6 +2,7 @@
 
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
+import { usePathname } from "next/navigation";
 import { useRef } from "react";
 
 gsap.registerPlugin(useGSAP);
@@ -324,6 +325,7 @@ export function WeatherControls({
   onChange: (w: Weather) => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   useGSAP(
     () => {
@@ -337,6 +339,11 @@ export function WeatherControls({
     },
     { dependencies: [] },
   );
+
+  // Hide on admin pages — admin has its own layout
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
 
   const options: Weather[] = ["sunny", "night", "rain", "snow"];
 

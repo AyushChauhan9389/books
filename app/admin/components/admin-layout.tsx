@@ -16,86 +16,49 @@ type AdminLayoutProps = {
   };
 };
 
-/* ── Pixel-art SVG decorations ── */
+/* ── Pixel-art SVG icons ── */
 
-function TorchDecoration({ className }: { className?: string }) {
+function PixelBookIcon({ active }: { active: boolean }) {
   return (
-    <svg
-      width="16"
-      height="32"
-      viewBox="0 0 8 16"
-      style={{ imageRendering: "pixelated" }}
-      className={className}
-    >
-      <title>Torch</title>
-      {/* Flame */}
-      <rect x="3" y="0" width="2" height="2" fill="#ffaa00" />
-      <rect x="2" y="1" width="1" height="2" fill="#ff6600" />
-      <rect x="5" y="1" width="1" height="2" fill="#ff6600" />
-      <rect x="3" y="2" width="2" height="1" fill="#ff4400" />
-      {/* Glow */}
-      <rect x="3" y="3" width="2" height="1" fill="#cc6600" />
-      {/* Stick */}
-      <rect x="3" y="4" width="2" height="10" fill="#6b4226" />
-      <rect x="3" y="4" width="1" height="10" fill="#8b5a2b" />
-      {/* Mount */}
-      <rect x="2" y="13" width="4" height="2" fill="#4a4a4a" />
-      <rect x="2" y="13" width="4" height="1" fill="#5a5a5a" />
+    <svg width="18" height="18" viewBox="0 0 12 12" style={{ imageRendering: "pixelated" }}>
+      <title>Books</title>
+      <rect x="2" y="1" width="8" height="10" fill={active ? "#c9a86a" : "#4a2d1a"} />
+      <rect x="1" y="1" width="1" height="10" fill={active ? "#a07830" : "#2a1810"} />
+      <rect x="3" y="2" width="6" height="8" fill="#f5e9cf" opacity={active ? 1 : 0.5} />
+      <rect x="4" y="3" width="4" height="1" fill="#2a1810" opacity="0.35" />
+      <rect x="4" y="5" width="3" height="1" fill="#2a1810" opacity="0.35" />
+      <rect x="4" y="7" width="4" height="1" fill="#2a1810" opacity="0.35" />
     </svg>
   );
 }
 
-function BookStackDecoration({ className }: { className?: string }) {
+function PixelChestIcon({ active }: { active: boolean }) {
   return (
-    <svg
-      width="28"
-      height="24"
-      viewBox="0 0 14 12"
-      style={{ imageRendering: "pixelated" }}
-      className={className}
-    >
-      <title>Book stack</title>
-      {/* Bottom book */}
-      <rect x="1" y="8" width="12" height="3" fill="#8b2020" />
-      <rect x="1" y="8" width="1" height="3" fill="#c9a86a" />
-      <rect x="3" y="9" width="8" height="1" fill="#6b1515" />
-      {/* Middle book */}
-      <rect x="2" y="5" width="10" height="3" fill="#1a5a1a" />
-      <rect x="2" y="5" width="1" height="3" fill="#c9a86a" />
-      <rect x="4" y="6" width="6" height="1" fill="#0f3f0f" />
-      {/* Top book */}
-      <rect x="3" y="2" width="9" height="3" fill="#2a1870" />
-      <rect x="3" y="2" width="1" height="3" fill="#c9a86a" />
-      <rect x="5" y="3" width="5" height="1" fill="#1a0f50" />
+    <svg width="18" height="18" viewBox="0 0 12 12" style={{ imageRendering: "pixelated" }}>
+      <title>Collections</title>
+      <rect x="1" y="4" width="10" height="7" fill={active ? "#c9a86a" : "#785023"} />
+      <rect x="1" y="4" width="10" height="3" fill={active ? "#dbb87a" : "#996a33"} />
+      <rect x="5" y="6" width="2" height="2" fill={active ? "#f5e9cf" : "#cfcfcc"} />
+      <rect x="1" y="4" width="10" height="1" fill={active ? "#a07830" : "#2c1a07"} />
     </svg>
   );
 }
 
-function ScrollDecoration({ className }: { className?: string }) {
+function PixelHomeIcon() {
   return (
-    <svg
-      width="24"
-      height="28"
-      viewBox="0 0 12 14"
-      style={{ imageRendering: "pixelated" }}
-      className={className}
-    >
-      <title>Scroll</title>
-      {/* Top roll */}
-      <rect x="2" y="0" width="8" height="2" fill="#d4b896" />
-      <rect x="1" y="0" width="1" height="2" fill="#8b6914" />
-      <rect x="10" y="0" width="1" height="2" fill="#8b6914" />
-      {/* Paper body */}
-      <rect x="2" y="2" width="8" height="9" fill="#f5e9cf" />
-      {/* Text lines */}
-      <rect x="3" y="3" width="6" height="1" fill="#2a1810" opacity="0.3" />
-      <rect x="3" y="5" width="5" height="1" fill="#2a1810" opacity="0.3" />
-      <rect x="3" y="7" width="6" height="1" fill="#2a1810" opacity="0.3" />
-      <rect x="3" y="9" width="4" height="1" fill="#2a1810" opacity="0.3" />
-      {/* Bottom roll */}
-      <rect x="2" y="11" width="8" height="2" fill="#d4b896" />
-      <rect x="1" y="11" width="1" height="2" fill="#8b6914" />
-      <rect x="10" y="11" width="1" height="2" fill="#8b6914" />
+    <svg width="16" height="16" viewBox="0 0 12 12" style={{ imageRendering: "pixelated" }}>
+      <title>Home</title>
+      <rect x="1" y="6" width="10" height="5" fill="#4a2d1a" />
+      <rect x="5" y="8" width="2" height="3" fill="#c9a86a" />
+      <rect x="1" y="5" width="1" height="1" fill="#2a1810" />
+      <rect x="2" y="4" width="1" height="1" fill="#2a1810" />
+      <rect x="3" y="3" width="1" height="1" fill="#2a1810" />
+      <rect x="4" y="2" width="1" height="1" fill="#2a1810" />
+      <rect x="5" y="1" width="2" height="1" fill="#2a1810" />
+      <rect x="7" y="2" width="1" height="1" fill="#2a1810" />
+      <rect x="8" y="3" width="1" height="1" fill="#2a1810" />
+      <rect x="9" y="4" width="1" height="1" fill="#2a1810" />
+      <rect x="10" y="5" width="1" height="1" fill="#2a1810" />
     </svg>
   );
 }
@@ -103,93 +66,8 @@ function ScrollDecoration({ className }: { className?: string }) {
 /* ── Navigation items ── */
 
 const NAV_ITEMS = [
-  {
-    label: "Books",
-    href: "/admin/books",
-    icon: (active: boolean) => (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 12 12"
-        style={{ imageRendering: "pixelated" }}
-      >
-        <title>Books</title>
-        {/* Book cover */}
-        <rect
-          x="2"
-          y="1"
-          width="8"
-          height="10"
-          fill={active ? "#c9a86a" : "#4a2d1a"}
-        />
-        <rect
-          x="1"
-          y="1"
-          width="1"
-          height="10"
-          fill={active ? "#a07830" : "#2a1810"}
-        />
-        {/* Pages */}
-        <rect
-          x="3"
-          y="2"
-          width="6"
-          height="8"
-          fill="#f5e9cf"
-          opacity={active ? 1 : 0.6}
-        />
-        {/* Text lines */}
-        <rect x="4" y="3" width="4" height="1" fill="#2a1810" opacity="0.4" />
-        <rect x="4" y="5" width="3" height="1" fill="#2a1810" opacity="0.4" />
-        <rect x="4" y="7" width="4" height="1" fill="#2a1810" opacity="0.4" />
-      </svg>
-    ),
-  },
-  {
-    label: "Collections",
-    href: "/admin/collections",
-    icon: (active: boolean) => (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 12 12"
-        style={{ imageRendering: "pixelated" }}
-      >
-        <title>Collections</title>
-        {/* Chest body */}
-        <rect
-          x="1"
-          y="4"
-          width="10"
-          height="7"
-          fill={active ? "#c9a86a" : "#785023"}
-        />
-        <rect
-          x="1"
-          y="4"
-          width="10"
-          height="3"
-          fill={active ? "#dbb87a" : "#996a33"}
-        />
-        {/* Chest lock */}
-        <rect
-          x="5"
-          y="6"
-          width="2"
-          height="2"
-          fill={active ? "#f5e9cf" : "#cfcfcc"}
-        />
-        {/* Chest lid line */}
-        <rect
-          x="1"
-          y="4"
-          width="10"
-          height="1"
-          fill={active ? "#a07830" : "#2c1a07"}
-        />
-      </svg>
-    ),
-  },
+  { label: "Books", href: "/admin/books", Icon: PixelBookIcon },
+  { label: "Collections", href: "/admin/collections", Icon: PixelChestIcon },
 ];
 
 /* ── AdminLayout ── */
@@ -203,68 +81,77 @@ export function AdminLayout({ children, session }: AdminLayoutProps) {
     router.push("/login");
   };
 
+  const currentSection = pathname.startsWith("/admin/collections")
+    ? "Collections"
+    : pathname.startsWith("/admin/books")
+      ? "Books"
+      : "Dashboard";
+
   return (
-    <div
-      className="min-h-screen flex"
-      style={{ background: "#0f0805", minWidth: "1024px" }}
-    >
+    <div className="min-h-screen flex" style={{ background: "#0f0805" }}>
       {/* ── Sidebar ── */}
       <aside
-        className="w-56 flex-shrink-0 flex flex-col"
+        className="w-[220px] flex-shrink-0 flex flex-col sticky top-0 h-screen"
         style={{
           background: "#1a0f0a",
-          borderRight: "1px solid rgba(201,168,106,0.15)",
+          borderRight: "1px solid rgba(201,168,106,0.1)",
         }}
       >
-        {/* Sidebar header / brand */}
+        {/* Brand */}
         <div
           className="px-5 py-5 flex items-center gap-3"
-          style={{ borderBottom: "1px solid rgba(201,168,106,0.1)" }}
+          style={{ borderBottom: "1px solid rgba(201,168,106,0.08)" }}
         >
-          <TorchDecoration />
-          <h1
-            className="font-headline text-lg font-bold tracking-wide"
-            style={{ color: "#f5e9cf" }}
-          >
-            Admin Panel
-          </h1>
+          {/* Pixel torch */}
+          <svg width="14" height="28" viewBox="0 0 7 14" style={{ imageRendering: "pixelated" }}>
+            <title>Torch</title>
+            <rect x="2" y="0" width="3" height="2" fill="#ffaa00" />
+            <rect x="1" y="1" width="1" height="1" fill="#ff6600" />
+            <rect x="5" y="1" width="1" height="1" fill="#ff6600" />
+            <rect x="2" y="2" width="3" height="1" fill="#cc6600" />
+            <rect x="2" y="3" width="3" height="9" fill="#6b4226" />
+            <rect x="2" y="3" width="1" height="9" fill="#8b5a2b" />
+            <rect x="1" y="12" width="5" height="2" fill="#4a4a4a" />
+          </svg>
+          <div>
+            <h1 className="font-headline text-sm font-bold tracking-wide" style={{ color: "#f5e9cf" }}>
+              The Archives
+            </h1>
+            <p className="font-label text-[9px] tracking-[0.2em] uppercase" style={{ color: "rgba(201,168,106,0.4)" }}>
+              Admin Panel
+            </p>
+          </div>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-3 py-4" aria-label="Admin navigation">
-          <ul className="space-y-1">
+        <nav className="flex-1 px-3 py-5" aria-label="Admin navigation">
+          <p className="px-3 mb-2 font-label text-[9px] tracking-[0.25em] uppercase" style={{ color: "rgba(201,168,106,0.3)" }}>
+            Manage
+          </p>
+          <ul className="space-y-0.5">
             {NAV_ITEMS.map((item) => {
-              const isActive =
-                pathname === item.href || pathname.startsWith(`${item.href}/`);
-
+              const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
               return (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-sm font-label text-xs uppercase tracking-[0.15em] transition-colors"
+                    className="flex items-center gap-3 px-3 py-2.5 rounded font-label text-[11px] uppercase tracking-[0.12em] transition-all duration-200"
                     style={{
-                      color: isActive ? "#c9a86a" : "#f5e9cf",
-                      background: isActive
-                        ? "rgba(201,168,106,0.12)"
-                        : "transparent",
-                      borderLeft: isActive
-                        ? "2px solid #c9a86a"
-                        : "2px solid transparent",
+                      color: isActive ? "#c9a86a" : "rgba(245,233,207,0.6)",
+                      background: isActive ? "rgba(201,168,106,0.1)" : "transparent",
                     }}
                     onMouseEnter={(e) => {
-                      if (!isActive) {
-                        e.currentTarget.style.background =
-                          "rgba(201,168,106,0.06)";
-                      }
+                      if (!isActive) e.currentTarget.style.background = "rgba(201,168,106,0.05)";
                     }}
                     onMouseLeave={(e) => {
-                      if (!isActive) {
-                        e.currentTarget.style.background = "transparent";
-                      }
+                      if (!isActive) e.currentTarget.style.background = "transparent";
                     }}
                   >
-                    {item.icon(isActive)}
+                    <item.Icon active={isActive} />
                     {item.label}
+                    {isActive && (
+                      <div className="ml-auto w-1.5 h-1.5 rounded-full" style={{ background: "#c9a86a" }} />
+                    )}
                   </Link>
                 </li>
               );
@@ -272,112 +159,94 @@ export function AdminLayout({ children, session }: AdminLayoutProps) {
           </ul>
         </nav>
 
-        {/* Sidebar decorations */}
-        <div
-          className="px-5 py-4 flex items-center justify-around opacity-40"
-          style={{ borderTop: "1px solid rgba(201,168,106,0.08)" }}
-        >
-          <BookStackDecoration />
-          <ScrollDecoration />
+        {/* Bottom: user + back to site */}
+        <div style={{ borderTop: "1px solid rgba(201,168,106,0.08)" }}>
+          {/* User */}
+          <div className="px-4 py-3 flex items-center gap-2.5">
+            <div
+              className="w-7 h-7 rounded-full flex items-center justify-center font-label text-[10px] uppercase"
+              style={{ background: "rgba(201,168,106,0.12)", color: "#c9a86a" }}
+            >
+              {(session.user.name || session.user.email).charAt(0)}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-label text-[11px] truncate" style={{ color: "#f5e9cf" }}>
+                {session.user.name || session.user.email}
+              </p>
+              <p className="font-label text-[9px] tracking-wider uppercase" style={{ color: "rgba(201,168,106,0.35)" }}>
+                Librarian
+              </p>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="px-3 pb-4 flex flex-col gap-1">
+            <Link
+              href="/"
+              className="flex items-center gap-2.5 px-3 py-2 rounded font-label text-[10px] uppercase tracking-[0.12em] transition-all duration-200"
+              style={{ color: "rgba(245,233,207,0.5)" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(201,168,106,0.05)";
+                e.currentTarget.style.color = "rgba(245,233,207,0.8)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent";
+                e.currentTarget.style.color = "rgba(245,233,207,0.5)";
+              }}
+            >
+              <PixelHomeIcon />
+              Back to Site
+            </Link>
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="flex items-center gap-2.5 px-3 py-2 rounded font-label text-[10px] uppercase tracking-[0.12em] transition-all duration-200 cursor-pointer text-left"
+              style={{ color: "rgba(245,233,207,0.5)", background: "transparent", border: "none" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(139,32,32,0.1)";
+                e.currentTarget.style.color = "#ff9999";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent";
+                e.currentTarget.style.color = "rgba(245,233,207,0.5)";
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <title>Sign out</title>
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+              Sign Out
+            </button>
+          </div>
         </div>
       </aside>
 
       {/* ── Main area ── */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Header bar */}
+        {/* Top bar */}
         <header
-          className="flex items-center justify-between px-6 py-3"
+          className="sticky top-0 z-20 flex items-center justify-between px-8 py-4"
           style={{
-            background: "#1a0f0a",
-            borderBottom: "1px solid rgba(201,168,106,0.15)",
+            background: "rgba(15,8,5,0.85)",
+            backdropFilter: "blur(12px)",
+            borderBottom: "1px solid rgba(201,168,106,0.08)",
           }}
         >
-          {/* Breadcrumb / section indicator */}
           <div className="flex items-center gap-2">
-            <TorchDecoration className="opacity-50" />
-            <span
-              className="font-label text-[10px] tracking-[0.3em] uppercase"
-              style={{ color: "rgba(201,168,106,0.5)" }}
-            >
-              {pathname.startsWith("/admin/collections")
-                ? "Collections"
-                : pathname.startsWith("/admin/books")
-                  ? "Books"
-                  : "Dashboard"}
+            <span className="font-label text-[10px] tracking-[0.25em] uppercase" style={{ color: "rgba(201,168,106,0.35)" }}>
+              Admin
             </span>
-          </div>
-
-          {/* User info + sign out */}
-          <div className="flex items-center gap-4">
-            {/* User identity */}
-            <div className="flex items-center gap-2">
-              {/* Pixel avatar */}
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 8 8"
-                style={{ imageRendering: "pixelated" }}
-              >
-                <title>Admin user</title>
-                {/* Head */}
-                <rect x="2" y="0" width="4" height="4" fill="#c9a86a" />
-                {/* Eyes */}
-                <rect x="3" y="1" width="1" height="1" fill="#1a0f0a" />
-                <rect x="5" y="1" width="1" height="1" fill="#1a0f0a" />
-                {/* Body */}
-                <rect x="1" y="4" width="6" height="4" fill="#4a2d1a" />
-                <rect x="3" y="4" width="2" height="2" fill="#c9a86a" />
-              </svg>
-              <span className="font-label text-xs" style={{ color: "#c9a86a" }}>
-                {session.user.name || session.user.email}
-              </span>
-            </div>
-
-            {/* Sign out button */}
-            <button
-              type="button"
-              onClick={handleSignOut}
-              className="font-label text-[10px] tracking-[0.15em] uppercase px-3 py-1.5 rounded-sm transition-colors cursor-pointer"
-              style={{
-                color: "#f5e9cf",
-                background: "rgba(201,168,106,0.08)",
-                border: "1px solid rgba(201,168,106,0.15)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(201,168,106,0.18)";
-                e.currentTarget.style.borderColor = "rgba(201,168,106,0.3)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "rgba(201,168,106,0.08)";
-                e.currentTarget.style.borderColor = "rgba(201,168,106,0.15)";
-              }}
-            >
-              Sign Out
-            </button>
+            <span style={{ color: "rgba(201,168,106,0.2)" }}>/</span>
+            <span className="font-label text-[11px] tracking-[0.15em] uppercase" style={{ color: "#c9a86a" }}>
+              {currentSection}
+            </span>
           </div>
         </header>
 
         {/* Page content */}
-        <main
-          className="flex-1 p-6 font-body relative"
-          style={{ color: "#f5e9cf" }}
-        >
-          {/* Subtle corner decorations */}
-          <div className="absolute top-3 right-3 opacity-[0.06] pointer-events-none">
-            <svg
-              width="48"
-              height="48"
-              viewBox="0 0 48 48"
-              fill="none"
-              style={{ imageRendering: "pixelated" }}
-            >
-              <title>Corner decoration</title>
-              <rect x="44" y="0" width="4" height="48" fill="#c9a86a" />
-              <rect x="0" y="0" width="48" height="4" fill="#c9a86a" />
-              <rect x="36" y="8" width="4" height="4" fill="#c9a86a" />
-              <rect x="8" y="8" width="4" height="4" fill="#c9a86a" />
-            </svg>
-          </div>
+        <main className="flex-1 p-8 font-body" style={{ color: "#f5e9cf" }}>
           {children}
         </main>
       </div>

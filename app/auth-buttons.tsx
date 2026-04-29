@@ -3,19 +3,22 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useRef } from "react";
-import { useSession, signOut } from "@/lib/auth-client";
+import { signOut, useSession } from "@/lib/auth-client";
 
 gsap.registerPlugin(useGSAP);
 
 export function AuthButtons() {
 	const ref = useRef<HTMLDivElement>(null);
 	const router = useRouter();
+	const pathname = usePathname();
 	const { data: session, isPending } = useSession();
+	const isAdmin = pathname.startsWith("/admin");
 
 	useGSAP(
 		() => {
+			if (isAdmin) return;
 			gsap.from(ref.current, {
 				opacity: 0,
 				y: -12,
@@ -24,8 +27,13 @@ export function AuthButtons() {
 				ease: "power2.out",
 			});
 		},
-		{ dependencies: [] },
+		{ dependencies: [isAdmin] },
 	);
+
+	// Hide on admin pages — admin layout has its own auth UI
+	if (isAdmin) {
+		return null;
+	}
 
 	if (isPending) {
 		return (
