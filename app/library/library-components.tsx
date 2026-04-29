@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { BookSpine } from "../components";
-import type { Book } from "../books-data";
+import type { Book } from "@/lib/types";
 import type { SpineRect } from "../components";
 
 /* ── Helpers ── */

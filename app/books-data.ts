@@ -1,18 +1,6 @@
-export type Book = {
-  title: string;
-  author: string;
-  stars: number;
-  bgColor: string;
-  textColor: string;
-  starColor?: string;
-  width: number;
-  height: number;
-  titleSize: string;
-  titleWeight: string;
-  titleTracking: string;
-};
+import type { Book } from "@/lib/types";
 
-export const books: Book[] = [
+export const books: Omit<Book, "id">[] = [
   {
     title: "THE CREATIVE ACT",
     author: "RUBIN",

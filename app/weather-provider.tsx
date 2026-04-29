@@ -13,6 +13,7 @@ import {
   RainWeather,
   SnowWeather,
 } from "./weather";
+import { AuthButtons } from "./auth-buttons";
 
 gsap.registerPlugin(useGSAP);
 
@@ -78,6 +79,7 @@ export function WeatherShell({ children }: { children: React.ReactNode }) {
         </div>
 
         <WeatherControls weather={weather} onChange={handleWeatherChange} />
+        <AuthButtons />
 
         {children}
       </div>

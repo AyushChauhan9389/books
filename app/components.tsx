@@ -3,7 +3,7 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { useCallback, useRef, useState } from "react";
-import type { Book } from "./books-data";
+import type { Book } from "@/lib/types";
 
 gsap.registerPlugin(useGSAP);
 
@@ -32,7 +32,13 @@ export function StarIcon({
   );
 }
 
-export function StarRating({ count, color }: { count: number; color?: string }) {
+export function StarRating({
+  count,
+  color,
+}: {
+  count: number;
+  color?: string | null;
+}) {
   return (
     <div
       className={`flex flex-col items-center gap-px ${color ?? "opacity-60"}`}
@@ -44,7 +50,13 @@ export function StarRating({ count, color }: { count: number; color?: string }) 
   );
 }
 
-export function InlineStars({ count, color }: { count: number; color?: string }) {
+export function InlineStars({
+  count,
+  color,
+}: {
+  count: number;
+  color?: string;
+}) {
   return (
     <div className={`flex items-center gap-0.5 ${color ?? "text-yellow-500"}`}>
       {Array.from({ length: 5 }, (_, i) => (
@@ -420,7 +432,8 @@ export function OpenBook({
               <div
                 className={`absolute inset-0 flex flex-col items-center justify-between py-4 overflow-hidden ${book.textColor}`}
                 style={{
-                  opacity: isSmall && spineRect.height > spineRect.width * 3 ? 1 : 0,
+                  opacity:
+                    isSmall && spineRect.height > spineRect.width * 3 ? 1 : 0,
                   transition: "opacity 0.2s ease",
                   pointerEvents: "none",
                 }}
