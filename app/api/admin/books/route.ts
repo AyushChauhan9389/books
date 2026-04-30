@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/admin-auth";
+import { revalidateBooks } from "@/lib/revalidate";
 import { validateBookInput } from "@/lib/validation/book";
 import { db } from "@/lib/db";
 import { book } from "@/lib/schema";
@@ -28,5 +29,6 @@ export async function POST(request: Request) {
 	}
 
 	const [created] = await db.insert(book).values(result.data).returning();
+	revalidateBooks();
 	return Response.json(created, { status: 201 });
 }

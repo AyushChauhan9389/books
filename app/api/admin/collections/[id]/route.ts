@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/admin-auth";
+import { revalidateCollections } from "@/lib/revalidate";
 import { validateCollectionInput } from "@/lib/validation/collection";
 import { db } from "@/lib/db";
 import { collection } from "@/lib/schema";
@@ -63,6 +64,7 @@ export async function PUT(
 			);
 		}
 
+		revalidateCollections();
 		return Response.json(updated);
 	} catch (error: unknown) {
 		if (error instanceof Error && error.message.includes("unique")) {
@@ -96,5 +98,6 @@ export async function DELETE(
 		);
 	}
 
+	revalidateCollections();
 	return new Response(null, { status: 204 });
 }

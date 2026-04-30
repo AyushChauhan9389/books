@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/admin-auth";
+import { revalidateBooks } from "@/lib/revalidate";
 import { validateBookInput } from "@/lib/validation/book";
 import { db } from "@/lib/db";
 import { book } from "@/lib/schema";
@@ -35,6 +36,7 @@ export async function PUT(
 		return Response.json({ error: "Book not found" }, { status: 404 });
 	}
 
+	revalidateBooks();
 	return Response.json(updated);
 }
 
@@ -56,5 +58,6 @@ export async function DELETE(
 		return Response.json({ error: "Book not found" }, { status: 404 });
 	}
 
+	revalidateBooks();
 	return new Response(null, { status: 204 });
 }

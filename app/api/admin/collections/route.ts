@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/admin-auth";
+import { revalidateCollections } from "@/lib/revalidate";
 import { validateCollectionInput } from "@/lib/validation/collection";
 import { db } from "@/lib/db";
 import { collection } from "@/lib/schema";
@@ -49,6 +50,7 @@ export async function POST(request: Request) {
 			.insert(collection)
 			.values(result.data)
 			.returning();
+		revalidateCollections();
 		return Response.json(created, { status: 201 });
 	} catch (error: unknown) {
 		if (

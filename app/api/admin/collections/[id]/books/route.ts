@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/admin-auth";
+import { revalidateBooks } from "@/lib/revalidate";
 import { db } from "@/lib/db";
 import { book, bookCollection } from "@/lib/schema";
 import { eq, asc } from "drizzle-orm";
@@ -67,6 +68,7 @@ export async function POST(
 			.values({ collectionId: id, bookId, position })
 			.returning();
 
+		revalidateBooks();
 		return Response.json(created, { status: 201 });
 	} catch (error: unknown) {
 		if (error instanceof Error && error.message.includes("unique")) {

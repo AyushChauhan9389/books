@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/admin-auth";
+import { revalidateBooks } from "@/lib/revalidate";
 import { db } from "@/lib/db";
 import { bookCollection } from "@/lib/schema";
 import { and, eq } from "drizzle-orm";
@@ -21,5 +22,6 @@ export async function DELETE(
 			),
 		);
 
+	revalidateBooks();
 	return new Response(null, { status: 204 });
 }
